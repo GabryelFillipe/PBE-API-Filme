@@ -8,10 +8,23 @@
    Exemplos de bibliotecas para conexão com o BD
         Sequelize   -> Foi utilizado em muitos projetos desde o inicio do node
         Prisma      -> É uma dependencia atual que trabalha com BD (SQL ou ORM)
+            npm install prisma --save           -> Instalar o prisma (Conexão com o Database)
+            npm instal @prisma/client --save    -> Instalar o cliente do prisma (Executar scripts SQL no BD)
+            npx prisma init                     -> Prompt de comando para inicializar o prisma mp projeto
+            npx prisma migrate dev              -> Realiza o sincronismo entre o prisma e o BD(cuidado,
+                                                nesse processo voce podra perder dados reais do banco, pois
+                                                ele pega e cria as tabelas programados no ORM schema.prisma)
+            npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o BD, geralmente
+                                                usamos para rodar o projeto em um PC novo.
+
         Knex        -> É uma dependencia atual que trabalha com MySQL
   
     Banco de dados não relacional
         Mongoouse   -> É uma dependencia para o Mongo DB (Não relacional)
+
+
+
+
  */
 
 // Import da dependencia do prima que permite a execução de script SQL no BD
