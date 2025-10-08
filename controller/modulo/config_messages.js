@@ -15,19 +15,19 @@ const data_atual = new Date()
 
 /**************************************Messagens Padronizadas******************************************************* */
 
-const MESSAGE_HEADER    = {
+const DEFAULT_HEADER    = {
     development: 'Gabryel Fillipe Cavalcanti da Silva',
     api_description: "API para manipular dados de filmes",
     status: Boolean,
     status_code: Number,
-    request_date: data_atual.getTimezoneOffset(),
+    request_date: data_atual.toString(),
     items: {}
    }
  
 
 /**************************************Messagens De Sucesso******************************************************* */
 
-const MESSAGE_REQUEST_SUCESS = {
+const SUCESS_REQUEST = {
     status: true,
     status_code: 200,
     message: 'Requisição bem sucedida!!!'
@@ -36,7 +36,44 @@ const MESSAGE_REQUEST_SUCESS = {
 
 /**************************************Messagens De Erro******************************************************* */
 
+const ERROR_NOT_FOUND = {
+    status: false,
+    status_code: 404,
+    message: 'Não foram encontrados dados de retorno!!!'
+}
+
+const ERROR_INTERNAL_SERVER_CONTROLLER = {
+    status: false,
+    status_code: 500,
+    message: 'Não foi possivel processar a requisição devido a erros internos no servidor (CONTROLLER)!!!'
+}
+const ERROR_INTERNAL_SERVER_MODEL = {
+    status: false,
+    status_code: 500,
+    message: 'Não foi possivel processar a requisição devido a erros internos no servidor (MODELAGEM DE DADOS)!!!'
+}
+
+const ERROR_REQUIRED_FIELDS = {
+    status: false,
+    status_code: 400,
+    message: 'Não foi possivel processar a requisição pois existem campos obrigatórios que devem ser encaminhados e atendidos conforme a documentação!!!'
+}
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
-    MESSAGE_HEADER,
-    MESSAGE_REQUEST_SUCESS
+    DEFAULT_HEADER,
+    SUCESS_REQUEST,
+    ERROR_NOT_FOUND,
+    ERROR_INTERNAL_SERVER_CONTROLLER,
+    ERROR_INTERNAL_SERVER_MODEL,
+    ERROR_REQUIRED_FIELDS
 }

@@ -12,6 +12,17 @@ orcamento DECIMAL(11,3) not null,
 trailer varchar(100) not null,
 capa varchar(200) not null
 );
+
+ALTER TABLE tbl_filme
+MODIFY COLUMN sinopse text NULL;
+
+ALTER TABLE tbl_filme
+MODIFY COLUMN data_lancamento DATE NULL;
+
+ALTER TABLE tbl_filme
+MODIFY COLUMN trailer varchar(200) NULL;
+
+
 INSERT into tbl_filme(nome, sinopse, data_lancamento, duracao, orcamento, trailer, capa) 
 VALUES(
 "Demon Slayer: Kimetsu no Yaiba - Castelo Infinito", 
@@ -23,14 +34,6 @@ VALUES(
 'https://br.web.img3.acsta.net/r_1280_720/img/9c/0f/9c0f6e33b4fafe1a3490b3fe4b4d7cce.jpg'
 );
 
-ALTER TABLE tbl_filme
-MODIFY COLUMN sinopse text NULL;
-
-ALTER TABLE tbl_filme
-MODIFY COLUMN data_lancamento DATE NULL;
-
-ALTER TABLE tbl_filme
-MODIFY COLUMN trailer varchar(200) NULL;
 
 INSERT into tbl_filme(nome, sinopse, data_lancamento, duracao, orcamento, trailer, capa) 
 VALUES(
