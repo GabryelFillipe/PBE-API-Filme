@@ -99,32 +99,32 @@ const inserirFilme = async function (filme, contentType) {
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nome Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
 
-            } else if (filme.sinopse != undefined) {
+            } else if (filme.sinopse == undefined) {
 
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Sinopse Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
 
-            } else if (filme.data_lancamento != undefined || filme.data_lancamento.length != 10) {
+            } else if (filme.data_lancamento == undefined || filme.data_lancamento.length != 10) {
 
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data Lançamento Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
 
-            } else if (filme.duracao != '' || filme.duracao != undefined || filme.duracao != null || filme.duracao.length > 8) {
+            } else if (filme.duracao == '' || filme.duracao == undefined || filme.duracao == null || filme.duracao.length > 8) {
 
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Duração Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
 
-            } else if (filme.orcamento != '' || filme.orcamento != undefined || filme.orcamento != null || filme.orcamento.length > 12 || typeof (filme.orcamento) != 'number') {
+            } else if (filme.orcamento == '' || filme.orcamento == undefined || filme.orcamento == null || filme.orcamento.length > 12 || typeof (filme.orcamento) != 'number') {
 
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Orçamento Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
 
-            } else if (filme.trailer != undefined || filme.trailer.length > 200) {
+            } else if (filme.trailer == undefined || filme.trailer.length > 200) {
 
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Trailer Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
 
-            } else if (filme.capa != '' || filme.capa != undefined || filme.capa != null || filme.capa.length > 200) {
+            } else if (filme.capa == '' || filme.capa == undefined || filme.capa == null || filme.capa.length > 200) {
 
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Capa Incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
@@ -166,5 +166,6 @@ const excluirFilme = async function (id) {
 }
 module.exports = {
     listarFilmes,
-    buscarFilmeId
+    buscarFilmeId,
+    inserirFilme
 }

@@ -10,6 +10,8 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
+// Cria um objeto especialista no formato JSON para receber dados via post e put
+const bodyParserJSON = bodyParser.json()
 // Importanto das controlers
 const controllerFilme = require('./controller/filme/controller_filme.js')
 
@@ -51,6 +53,21 @@ app.get('/v1/locadora/filme/:id', cors(), async function (request, response) {
     response.status(filme.status_code).json(filme)
 })
 
+// Adiciona um filme ao BD
+app.post('/v1/locadora/filme', cors(), bodyParserJSON, async function(request, response){
+
+    // Recebe os dados do Body da Requisição (Se utililar o bodyParser, é obrigatorio ter no endPoint)
+    let dadosBody = request.body
+
+    // Recebe o tipo de dados da requisição (JSON ou XML ou ...)
+    let contentType = request.headers['content-type']
+
+    // Chama a função da controller para inserir um novo filme, encaminha os dados e o content-type
+    let filme = await controllerFilme.inserirFilme(dadosBody, contentType)
+
+    response.status(filme.status_code).json(filme)
+
+})
 app.listen(PORT, function () {
     console.log('API Aguardando Requisições!!!')
 })
