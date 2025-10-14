@@ -30,6 +30,7 @@ app.use((request, response, next) => {
 
 // EndPoints para a rota de filmes
 
+// Retorna a lista com todos os filmes
 app.get('/v1/locadora/filme', cors(), async function (request, response) {
     // Chama a função para listar os filmes do BD
     let filmes = await controllerFilme.listarFilmes()
@@ -38,6 +39,7 @@ app.get('/v1/locadora/filme', cors(), async function (request, response) {
     response.status(filmes.status_code).json(filmes)
 })
 
+// Retorna o filme filtrando pelo ID
 app.get('/v1/locadora/filme/:id', cors(), async function (request, response) {
 
     // Recebe o ID encaminhado via parametro na requisição

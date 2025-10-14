@@ -53,7 +53,7 @@ const getSelectAllMovies = async function () {
         let sql = `select * from tbl_filme order by id desc`
 
         // Encaminha para o BD o Script SQL
-        let result =  await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
 
         if (Array.isArray(result))
             return result
@@ -73,7 +73,7 @@ const getSelectByIdMovies = async function (id) {
         let sql = `select * from tbl_filme where id=${id}`
 
         // Encaminha para o BD o Script SQL
-        let result =  await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
 
         if (Array.isArray(result))
             return result
@@ -87,7 +87,37 @@ const getSelectByIdMovies = async function (id) {
 }
 
 // Insere um filme novo no banco de dados
-const setInsertMovies = async function () {
+const setInsertMovies = async function (filme) {
+
+    try {
+        let sql = `INSERT into tbl_filme(
+                        nome,
+                        sinopse,
+                        data_lancamento,
+                        duracao,
+                        orcamento,
+                        trailer, 
+                        capa) 
+                    VALUES(
+                            '${filme.nome}',
+                            '${filme.sinopse}',
+                            '${filme.data_lancamento}',
+                            '${filme.duracao}',
+                            '${filme.orcamento}',
+                            '${filme.trailer}',
+                            '${filme.capa}')`
+
+        // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if (result)
+            return true
+        else
+            return false
+
+    } catch (error) {
+        return false
+    }
 
 }
 
@@ -103,5 +133,6 @@ const setDeleteMovies = async function (id) {
 
 module.exports = {
     getSelectAllMovies,
-    getSelectByIdMovies
+    getSelectByIdMovies,
+    setInsertMovies,
 }
