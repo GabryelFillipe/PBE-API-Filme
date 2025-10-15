@@ -10,20 +10,20 @@
 const data_atual = new Date()
 
 /******************************************************************************************************************/
- 
+
 
 
 /**************************************Messagens Padronizadas******************************************************* */
 
-const DEFAULT_HEADER    = {
+const DEFAULT_HEADER = {
     development: 'Gabryel Fillipe Cavalcanti da Silva',
     api_description: "API para manipular dados de filmes",
     status: Boolean,
     status_code: Number,
     request_date: data_atual.toString(),
     items: {}
-   }
- 
+}
+
 
 /**************************************Messagens De Sucesso******************************************************* */
 
@@ -44,7 +44,13 @@ const SUCESS_UPDATED_ITEM = {
     status_code: 200,
     message: 'Item atualizado com sucesso!!!'
 }
- 
+
+const SUCESS_DELETED_ITEM = {
+    status: true,
+    status_code: 200,
+    message: 'Item deletado com sucesso!!!'
+}
+
 
 /**************************************Messagens De Erro******************************************************* */
 
@@ -93,6 +99,7 @@ module.exports = {
     SUCESS_REQUEST,
     SUCESS_CREATED_ITEM,
     SUCESS_UPDATED_ITEM,
+    SUCESS_DELETED_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,

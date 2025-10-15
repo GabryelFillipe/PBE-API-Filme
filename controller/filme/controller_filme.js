@@ -155,10 +155,10 @@ const atualizarFilme = async function (filme, id, contentType) {
                     let resultFilmes = await filmeDAO.setUpdateMovies(filme)
 
                     if (resultFilmes) {
-                        MESSAGES.DEFAULT_HEADER.status          =   MESSAGES.SUCESS_UPDATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code     =   MESSAGES.SUCESS_UPDATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message         =   MESSAGES.SUCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items.filme     =   filme
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_UPDATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_UPDATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items.filme = filme
 
                         return MESSAGES.DEFAULT_HEADER // 201
                     } else {
@@ -185,6 +185,37 @@ const atualizarFilme = async function (filme, id, contentType) {
 
 // Exclui um filme buscando pelo id
 const excluirFilme = async function (id) {
+
+    // Criando um objeto novo para que um nõo interfira no outro
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
+
+    try {
+
+        let validarID = await buscarFilmeId(id)
+
+      
+        if (validarID.status_code == 200) {
+
+            // Processamento
+            // Chama a função para atualizar um filme no BD
+            let resultFilmes = await filmeDAO.setDeleteMovies(id)
+ 
+            if (resultFilmes) {
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_DELETED_ITEM.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_DELETED_ITEM.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_DELETED_ITEM.message
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+        } else {
+            return validarID // A função buscarFilmeId poderá retornar (400 ou 404 ou 500)
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
 
 }
 
@@ -241,4 +272,5 @@ module.exports = {
     buscarFilmeId,
     inserirFilme,
     atualizarFilme,
+    excluirFilme
 }
