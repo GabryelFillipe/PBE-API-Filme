@@ -105,11 +105,26 @@ const inserirFilme = async function (filme, contentType) {
                 let resultFilmes = await filmeDAO.setInsertMovies(filme)
 
                 if (resultFilmes) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_CREATED_ITEM.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_CREATED_ITEM.status_code
-                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_CREATED_ITEM.message
 
-                    return MESSAGES.DEFAULT_HEADER // 201
+                    // Chama a função para recerber o ID gerado no BD
+                    let lastID = await filmeDAO.getSelectLastID()
+
+                    if (lastID) {
+
+                        // Adiciona o ID no JSON de retorno
+                        filme.id = lastID
+                        MESSAGES.DEFAULT_HEADER.status         =  MESSAGES.SUCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code    =  MESSAGES.SUCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message        =  MESSAGES.SUCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items          =  filme
+
+                        return MESSAGES.DEFAULT_HEADER // 201
+
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                    }
+
+
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                 }
@@ -193,13 +208,13 @@ const excluirFilme = async function (id) {
 
         let validarID = await buscarFilmeId(id)
 
-      
+
         if (validarID.status_code == 200) {
 
             // Processamento
             // Chama a função para atualizar um filme no BD
             let resultFilmes = await filmeDAO.setDeleteMovies(id)
- 
+
             if (resultFilmes) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_DELETED_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_DELETED_ITEM.status_code
