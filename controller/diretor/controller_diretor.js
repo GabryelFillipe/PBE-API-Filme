@@ -186,7 +186,6 @@ const atualizarDiretor = async function (diretor, id, contentType) {
         
         
             } catch (error) {
-                console.log(error)
                 return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
             }
 
@@ -204,6 +203,7 @@ const excluirDiretor = async function (id) {
 
         if (validarID.status_code == 200) {
 
+            
             // Processamento
             // Chama a função para atualizar um filme no BD
             let resultDiretores = await diretorDAO.setDeleteDirector(id)
@@ -222,6 +222,7 @@ const excluirDiretor = async function (id) {
         }
 
     } catch (error) {
+        
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }

@@ -101,7 +101,6 @@ app.delete('/v1/locadora/filme/:id', cors(),  async function (request, response)
 app.get('/v1/locadora/diretor', cors(), async function (request, response) {
     let diretores = await controllerDiretor.listarDiretores()
 
-    console.log(diretores)
     response.status(diretores.status_code).json(diretores)
 })
 
@@ -152,12 +151,12 @@ app.put('/v1/locadora/diretor/:id', cors(), bodyParserJSON, async function(reque
 })
 
 // Excluir um diretor do BD
-app.delete('/v1/locadore/diretor/:id', cors(), async function (request, response) {
+app.delete('/v1/locadora/diretor/:id', cors(), async function (request, response) {
     
     let idDiretor = request.params.id
 
     let diretor = await controllerDiretor.excluirDiretor(idDiretor)
-    console.log(diretor)
+
     response.status(diretor.status_code).json(diretor)
 
 })
