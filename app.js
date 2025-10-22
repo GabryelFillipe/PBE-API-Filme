@@ -15,6 +15,8 @@ const bodyParserJSON = bodyParser.json()
 // Importanto das controlers
 const controllerFilme = require('./controller/filme/controller_filme.js')
 
+const controllerDiretor = require('./controller/diretor/controller_diretor.js')
+
 // Retorna a porta do servidor atual ou coloca uma porta local
 const PORT = process.PORT || 8080
 
@@ -36,7 +38,6 @@ app.use((request, response, next) => {
 app.get('/v1/locadora/filme', cors(), async function (request, response) {
     // Chama a função para listar os filmes do BD
     let filmes = await controllerFilme.listarFilmes()
-
 
     response.status(filmes.status_code).json(filmes)
 })
@@ -86,14 +87,79 @@ app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function (reques
     response.status(filme.status_code).json(filme)
 })
 
-app.delete('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function(request, response){
+app.delete('/v1/locadora/filme/:id', cors(),  async function (request, response) {
 
-      // Recebe o ID via parametro da requisição
+    // Recebe o ID via parametro da requisição
     let idFilme = request.params.id
 
     let filme = await controllerFilme.excluirFilme(idFilme)
     //console.log(filme)
     response.status(filme.status_code).json(filme)
+})
+
+// Retorna a lista de todos os diretores
+app.get('/v1/locadora/diretor', cors(), async function (request, response) {
+    let diretores = await controllerDiretor.listarDiretores()
+
+    console.log(diretores)
+    response.status(diretores.status_code).json(diretores)
+})
+
+// Retorna um diretor filtrando pelo ID
+app.get('/v1/locadora/diretor/:id', cors(), async function (request, response) {
+
+    let idDiretor = request.params.id
+
+    let diretor = await controllerDiretor.buscarDiretorID(idDiretor)
+
+    response.status(diretor.status_code).json(diretor)
+
+})
+
+// Adiciona um diretor ao BD 
+app.post('/v1/locadora/diretor', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe os dados do Body da Requisição (Se utililar o bodyParser, é obrigatorio ter no endPoint)
+    let dadosBody = request.body
+
+    // Recebe o tipo de dados da requisição (JSON ou XML ou ...)
+    let contentType = request.headers['content-type']
+ 
+    // Chama a função para inserir um diretor ao BD
+    let diretor = await controllerDiretor.inserirDiretor(dadosBody, contentType)
+
+    
+    response.status(diretor.status_code).json(diretor)
+
+})
+
+//Atualiza um diretor do BD
+app.put('/v1/locadora/diretor/:id', cors(), bodyParserJSON, async function(request, response) {
+    
+    // Recebe o ID via parametro da requisição
+    let idDiretor = request.params.id
+
+    // Recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    // Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    let diretor = await controllerDiretor.atualizarDiretor(dadosBody, idDiretor, contentType)
+
+    response.status(diretor.status_code).json(diretor)
+
+})
+
+// Excluir um diretor do BD
+app.delete('/v1/locadore/diretor/:id', cors(), async function (request, response) {
+    
+    let idDiretor = request.params.id
+
+    let diretor = await controllerDiretor.excluirDiretor(idDiretor)
+    console.log(diretor)
+    response.status(diretor.status_code).json(diretor)
+
 })
 
 

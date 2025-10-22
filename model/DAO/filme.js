@@ -159,7 +159,7 @@ const setUpdateMovies = async function (filme) {
 
         // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores
         let result = await prisma.$executeRawUnsafe(sql)
-
+        console.log(result)
         if (result)
             return true
         else

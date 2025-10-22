@@ -21,7 +21,7 @@ const listarFilmes = async function () {
     try {
         // Chama a função do DAO para retornar a lista de filmes do BD
         let resultFilmes = await filmeDAO.getSelectAllMovies()
-
+        console.log(resultFilmes)
         if (resultFilmes) {
             if (resultFilmes.length > 0) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
@@ -111,7 +111,7 @@ const inserirFilme = async function (filme, contentType) {
 
                     if (lastID) {
 
-                        // Adiciona o ID no JSON de retorno
+                        // Adiciona o ID no JSON com os dados do filme
                         filme.id = lastID
                         MESSAGES.DEFAULT_HEADER.status         =  MESSAGES.SUCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code    =  MESSAGES.SUCESS_CREATED_ITEM.status_code
@@ -123,7 +123,6 @@ const inserirFilme = async function (filme, contentType) {
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
-
 
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
