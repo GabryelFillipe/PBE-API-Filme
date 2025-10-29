@@ -13,13 +13,15 @@ const bodyParser = require('body-parser')
 // Cria um objeto especialista no formato JSON para receber dados via post e put
 const bodyParserJSON = bodyParser.json()
 // Importanto das controlers
-const controllerFilme = require('./controller/filme/controller_filme.js')
+const controllerFilme           =   require('./controller/filme/controller_filme.js')
 
-const controllerDiretor = require('./controller/diretor/controller_diretor.js')
+const controllerDiretor         =   require('./controller/diretor/controller_diretor.js')
 
-const controllerAtor = require('./controller/ator/controller_ator.js')
+const controllerAtor            =   require('./controller/ator/controller_ator.js')
 
-const controllerClassificacao = require('./controller/classificacao/controller_classificacao.js')
+const controllerClassificacao   =   require('./controller/classificacao/controller_classificacao.js')
+
+const controllerProdutor        =   require('./controller/produtor/controller_produtor.js')
 
 // Retorna a porta do servidor atual ou coloca uma porta local
 const PORT = process.PORT || 8080

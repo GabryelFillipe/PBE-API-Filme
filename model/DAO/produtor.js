@@ -1,5 +1,5 @@
 /*******************************************************************************************************************
- * Objetivo: Arquivo responsável pelo CRUD de dados no MySQL referente ao ator do filme
+ * Objetivo: Arquivo responsável pelo CRUD de dados no MySQL referente ao produtor do filme
  * Data: 29/10/2025
  * Autor: Gabryel Fillipe Cavalcanti da Silva
  * Versão: 1.0
@@ -13,11 +13,11 @@ const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient()
 
 
-const getSelectAllClassificacao = async function () {
+const getSelectAllProducers = async function () {
 
     try {
 
-        let sql = 'select * from tbl_classificacao'
+        let sql = 'select * from tbl_produtor'
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -33,11 +33,11 @@ const getSelectAllClassificacao = async function () {
 
 }
 
-const getSelectByIdClassificacao = async function (id) {
+const getSelectByIdProducer = async function (id) {
 
     try {
 
-        let sql = `select * from tbl_classificacao where classificacao_id = ${id}`
+        let sql = `select * from tbl_produtor where produtor_id = ${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -56,12 +56,12 @@ const getSelectLastID = async function () {
 
     try {
 
-        let sql = 'select classificacao_id from tbl_classificacao order by classificacao_id desc limit 1'
+        let sql = 'select produtor_id from tbl_produtor order by produtor_id desc limit 1'
 
         let result = await prisma.$queryRawUnsafe(sql)
 
         if (Array.isArray(result)) {
-            return Number(result[0].classificacao_id)
+            return Number(result[0].ator_id)
         } else {
             return false
         }
@@ -73,21 +73,23 @@ const getSelectLastID = async function () {
 
 }
 
-const setInsertclassificacao = async function (classificacao) {
+const setInsertProducers = async function (produtor) {
 
     try {
 
-        let sql = `INSERT INTO tbl_classificacao (
+        let sql = `INSERT INTO tbl_produtor (
                         nome, 
-                        descricao, 
-                        icone_url)
+                        foto_url
                     VALUES (
-                        '${classificacao.nome}',
-                        '${classificacao.descricao}',
-                        '${classificacao.icone_url}'
+                        '${produtor.nome}',
+                        '${produtor.data_nascimento}',
+                        '${produtor.nacionalidade}',
+                        '${produtor.foto_url}',
+                        '${produtor.biografia}'
                     );`
 
         let result = await prisma.$executeRawUnsafe(sql)
+
         if (result) {
             return true
         } else {
@@ -101,17 +103,18 @@ const setInsertclassificacao = async function (classificacao) {
 
 }
 
-const setUpdateClassificacao = async function (classificacao) {
+const setUpdateProducer = async function (ator) {
 
     try {
 
-        let sql = `update tbl_classificacao set
-                    nome                =   '${classificacao.nome}',
-                    descricao     =   '${classificacao.descricao}',
-                    icone_url       =   '${classificacao.icone_url}'
-                  
+        let sql = `update tbl_produtor set
+                    nome                =   '${produtor.nome}',
+                    data_nascimento     =   '${produtor.data_nascimento}',
+                    nacionalidade       =   '${produtor.nacionalidade}',
+                    foto_url            =   '${produtor.foto_url}',
+                    biografia           =   '${produtor.biografia}'
 
-                where classificacao_id        =   ${classificacao.id}`
+                where produtor_id        =   ${produtor.id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -126,11 +129,11 @@ const setUpdateClassificacao = async function (classificacao) {
 
 }
 
-const setDeleteClassificacao = async function (id) {
+const setDeleteProducer = async function (id) {
 
     try {
 
-        let sql = `delete from tbl_classificacao where classificacao_id = ${id}`
+        let sql = `delete from tbl_produtor where produtor_id = ${id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -147,10 +150,10 @@ const setDeleteClassificacao = async function (id) {
 }
 
 module.exports = {
-    getSelectAllClassificacao,
-    getSelectByIdClassificacao,
+    getSelectAllProducers,
+    getSelectByIdProducer,
     getSelectLastID,
-    setInsertclassificacao,
-    setUpdateClassificacao,
-    setDeleteClassificacao
+    setInsertProducers,
+    setUpdateProducer,
+    setDeleteProducer
 }

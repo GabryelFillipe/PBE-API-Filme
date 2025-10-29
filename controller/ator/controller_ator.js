@@ -58,7 +58,7 @@ const buscarAtorID = async function (id) {
                 if (resultAtores.length > 0) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.atores = resultAtores
+                    MESSAGES.DEFAULT_HEADER.itens.atores = resultAtores
 
                     return MESSAGES.DEFAULT_HEADER //200
                 } else {
@@ -74,7 +74,7 @@ const buscarAtorID = async function (id) {
         }
 
     } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
 }

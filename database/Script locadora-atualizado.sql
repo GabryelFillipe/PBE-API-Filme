@@ -81,7 +81,10 @@ CREATE TABLE tbl_diretor (
 CREATE TABLE tbl_produtor (
     produtor_id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
-    foto_url VARCHAR(200) NULL
+    foto_url VARCHAR(200) NULL,
+    data_nascimento DATE NULL,
+    nacionalidade VARCHAR(100) NULL,
+    biografia TEXT NULL
 );
 
 --

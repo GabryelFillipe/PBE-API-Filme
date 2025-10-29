@@ -94,7 +94,7 @@ const inserirDiretor = async function (diretor, contentType) {
             
             if (!validar) {
 
-                // Chama a função para inserir um novo filme no BD
+                // Chama a função para inserir um novo diretor no BD
                 let resultDiretores = await diretorDAO.setInsertDirectors(diretor)
                
                 if (resultDiretores) {
@@ -226,7 +226,7 @@ const excluirDiretor = async function (id) {
     }
 }
 
-// Validação dos dados de cadastro e atualização do filme
+// Validação dos dados de cadastro e atualização do diretor
 const validarDadosDiretor = async function (diretor) {
 
     // Criando um objeto novo para que um nõo interfira no outro
