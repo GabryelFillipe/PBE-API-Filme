@@ -159,7 +159,7 @@ const atualizarAtor = async function (ator, id, contentType) {
                             ator.id = Number(id)
         
                             // Processamento
-                            // Chama a função para atualizar um filme no BD
+                            // Chama a função para atualizar um ator no BD
                             let resultAtores = await atorDAO.setUpdateActors(ator)
 
                             if (resultAtores) {
@@ -173,7 +173,7 @@ const atualizarAtor = async function (ator, id, contentType) {
                                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                             }
                         } else {
-                            return validarID // A função buscarFilmeId poderá retornar (400 ou 404 ou 500)
+                            return validarID // A função poderá retornar (400 ou 404 ou 500)
                         }
         
                     } else {

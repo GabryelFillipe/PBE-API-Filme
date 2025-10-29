@@ -19,6 +19,8 @@ const controllerDiretor = require('./controller/diretor/controller_diretor.js')
 
 const controllerAtor = require('./controller/ator/controller_ator.js')
 
+const controllerClassificacao = require('./controller/classificacao/controller_classificacao.js')
+
 // Retorna a porta do servidor atual ou coloca uma porta local
 const PORT = process.PORT || 8080
 
@@ -224,6 +226,70 @@ app.delete('/v1/locadora/ator/:id', cors(), async function (request, response) {
     let ator = await controllerAtor.excluirAtor(idAtor)
 
     response.status(ator.status_code).json(ator)
+
+})
+
+// Retorna a lista de todos as classificações
+app.get('/v1/locadora/classificacao', cors(), async function (request, response) {
+    let classificacoes = await controllerClassificacao.listarClassificacoes()
+
+    response.status(classificacoes.status_code).json(classificacoes)
+})
+
+// Retorna uma classificação filtrando pelo ID
+app.get('/v1/locadora/classificacao/:id', cors(), async function (request, response) {
+
+    let idClassificacao = request.params.id
+
+    let classificacao = await controllerClassificacao.buscarClassificacaoID(idClassificacao)
+
+    response.status(classificacao.status_code).json(classificacao)
+
+})
+
+// Adiciona uma classificacao ao BD 
+app.post('/v1/locadora/classificacao', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe os dados do Body da Requisição (Se utililar o bodyParser, é obrigatorio ter no endPoint)
+    let dadosBody = request.body
+    
+    // Recebe o tipo de dados da requisição (JSON ou XML ou ...)
+    let contentType = request.headers['content-type']
+    
+    // Chama a função para inserir um diretor ao BD
+    let classificacao = await controllerClassificacao.inserirClassificacao(dadosBody, contentType)
+    
+    
+    response.status(classificacao.status_code).json(classificacao)
+
+})
+
+//Atualiza uma classificação do BD
+app.put('/v1/locadora/classificacao/:id', cors(), bodyParserJSON, async function(request, response) {
+    
+    // Recebe o ID via parametro da requisição
+    let idClassificacao = request.params.id
+
+    // Recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    // Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    let classificacao = await controllerClassificacao.atualizarClassificacao(idClassificacao, dadosBody, contentType)
+
+    response.status(classificacao.status_code).json(classificacao)
+
+})
+
+// Excluir um classificação do BD
+app.delete('/v1/locadora/classificacao/:id', cors(), async function (request, response) {
+    
+    let idClassificacao = request.params.id
+
+    let classificacao = await controllerClassificacao.excluirClassificacao(idClassificacao)
+
+    response.status(classificacao.status_code).json(classificacao)
 
 })
 
