@@ -1,16 +1,16 @@
 /*******************************************************************************************************************
- * Objetivo: Arquivo responsável pela manipulação de dados entre o APP e a MODEL, para o CRUDE de diretor
- * Data: 22/10/2025
+ * Objetivo: Arquivo responsável pela manipulação de dados entre o APP e a MODEL, para o CRUDE de Ator
+ * Data: 29/10/2025
  * Autor: Gabryel Fillipe Cavalcanti da Silva
  * Versão: 1.0
  ******************************************************************************************************************/
 
-const diretorDAO = require('../../model/DAO/diretor')
+const atorDAO = require('../../model/DAO/ator.js')
 
 const DEFAUL_MESSAGES = require('../modulo/config_messages')
 
-// Busca todos os diretores
-const listarDiretores = async function () {
+// Busca todos os ator
+const listarAtores = async function () {
 
     // Criando um objeto novo para que um não interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
@@ -18,14 +18,14 @@ const listarDiretores = async function () {
     try {
 
         // Chama a função para inserir um novo filme no BD
-        let resultDiretores = await diretorDAO.getSelectAllDirectors()
+        let resultAtores = await atorDAO.getSelectAllActors()
 
-        if (resultDiretores) {
+        if (resultAtores) {
 
-            if (resultDiretores.length > 0) {
+            if (resultAtores.length > 0) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.items.diretores = resultDiretores
+                MESSAGES.DEFAULT_HEADER.items.atores = resultAtores
 
                 return MESSAGES.DEFAULT_HEADER //200
             } else {
@@ -40,8 +40,8 @@ const listarDiretores = async function () {
     }
 }
 
-// Busca um diretor filtrando pelo id
-const buscarDiretorID = async function (id) {
+// Busca um ator filtrando pelo id
+const buscarAtorID = async function (id) {
 
     // Criando um objeto novo para que um não interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
@@ -51,14 +51,14 @@ const buscarDiretorID = async function (id) {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
             // Chama a função para inserir um novo filme no BD
-            let resultDiretores = await diretorDAO.getSelectByIdDirectors(Number(id))
+            let resultAtores = await atorDAO.getSelectByIdActor(Number(id))
 
-            if (resultDiretores) {
+            if (resultAtores) {
 
-                if (resultDiretores.length > 0) {
+                if (resultAtores.length > 0) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.diretores = resultDiretores
+                    MESSAGES.DEFAULT_HEADER.items.atores = resultAtores
 
                     return MESSAGES.DEFAULT_HEADER //200
                 } else {
@@ -79,35 +79,35 @@ const buscarDiretorID = async function (id) {
 
 }
 
-// Insere um diretor
-const inserirDiretor = async function (diretor, contentType) {
+// Insere um ator
+const inserirAtor = async function (ator, contentType) {
 
     // Criando um objeto novo para que um não interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
-
     try {
 
          // Validação do tipo de conteudo da requisição. (Obrigatorio ser um JSON)
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
-            // Chama a função de validar dados do diretor
-            let validar = await validarDadosDiretor(diretor)
-            
+            // Chama a função de validar dados do ator
+            let validar = await validarDadosAtor(ator)
+
             if (!validar) {
 
                 // Chama a função para inserir um novo filme no BD
-                let resultDiretores = await diretorDAO.setInsertDirectors(diretor)
-               
-                if (resultDiretores) {
-                    // Chama a função para procurar o ultimo ID de diretor adicionado no BD
-                    let lastID = await diretorDAO.getSelectLastID()
-                    if (lastID) {
+                let resultAtores = await atorDAO.setInsertActors(ator)
+                
+                if (resultAtores) {
 
+                    // Chama a função para procurar o ultimo ID de ator adicionado no BD
+                    let lastID = await atorDAO.getSelectLastID()
+                    
+                    if (lastID) {
                         // Adiciona o ID no JSON com os dados do filme
-                        diretor.id = lastID
+                        ator.id = lastID
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items = diretor
+                        MESSAGES.DEFAULT_HEADER.items = ator
 
                         return MESSAGES.DEFAULT_HEADER // 201
 
@@ -128,13 +128,14 @@ const inserirDiretor = async function (diretor, contentType) {
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
 }
 
-// Atualiza um diretor
-const atualizarDiretor = async function (diretor, id, contentType) {
+// Atualiza um ator
+const atualizarAtor = async function (ator, id, contentType) {
 
     // Criando um objeto novo para que um não interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
@@ -145,27 +146,27 @@ const atualizarDiretor = async function (diretor, id, contentType) {
                 if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
         
                     // Chama a função de validar todos os dados do filme 
-                    let validar = await validarDadosDiretor(diretor)
-        
+                    let validar = await validarDadosAtor(ator)
+                    
                     if (!validar) {
         
                         // Validação de ID válido, chama a função da controller que verifica no BD se o ID existe
-                        let validarID = await buscarDiretorID(id)
+                        let validarID = await buscarAtorID(id)
         
                         if (validarID.status_code == 200) {
         
                             // Adiciona o ID do filme no JSON de dados para ser encaminhados ao DA
-                            diretor.id = Number(id)
+                            ator.id = Number(id)
         
                             // Processamento
                             // Chama a função para atualizar um filme no BD
-                            let resultDiretores = await diretorDAO.setUpdateDirectors(diretor)
-                            
-                            if (resultDiretores) {
+                            let resultAtores = await atorDAO.setUpdateActors(ator)
+
+                            if (resultAtores) {
                                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_UPDATED_ITEM.status
                                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_UPDATED_ITEM.status_code
                                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_UPDATED_ITEM.message
-                                MESSAGES.DEFAULT_HEADER.items.diretor = diretor
+                                MESSAGES.DEFAULT_HEADER.items.ator = ator
         
                                 return MESSAGES.DEFAULT_HEADER // 201
                             } else {
@@ -190,14 +191,14 @@ const atualizarDiretor = async function (diretor, id, contentType) {
 
 }
 
-// Exclui um diretor
-const excluirDiretor = async function (id) {
+// Exclui um ator
+const excluirAtor = async function (id) {
 // Criando um objeto novo para que um nõo interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
 
     try {
 
-        let validarID = await buscarDiretorID(id)
+        let validarID = await buscarAtorID(id)
         
 
         if (validarID.status_code == 200) {
@@ -205,9 +206,9 @@ const excluirDiretor = async function (id) {
             
             // Processamento
             // Chama a função para atualizar um filme no BD
-            let resultDiretores = await diretorDAO.setDeleteDirector(id)
+            let resultAtores = await atorDAO.setDeleteActor(id)
 
-            if (resultDiretores) {
+            if (resultAtores) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_DELETED_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_DELETED_ITEM.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_DELETED_ITEM.message
@@ -217,7 +218,7 @@ const excluirDiretor = async function (id) {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
             }
         } else {
-            return validarID // A função buscarFilmeId poderá retornar (400 ou 404 ou 500)
+            return validarID // A função buscarAtorId poderá retornar (400 ou 404 ou 500)
         }
 
     } catch (error) {
@@ -227,38 +228,33 @@ const excluirDiretor = async function (id) {
 }
 
 // Validação dos dados de cadastro e atualização do filme
-const validarDadosDiretor = async function (diretor) {
+const validarDadosAtor = async function (ator) {
 
     // Criando um objeto novo para que um nõo interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
 
     // Validação de todas as entradas de dados
-    if (diretor.nome == '' || diretor.nome == undefined || diretor.nome == null || diretor.nome.length > 100) {
+    if (ator.nome == '' || ator.nome == undefined || ator.nome == null || ator.nome.length > 100) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nome Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if (diretor.nome_artistico == undefined || diretor.nome_artistico > 100) {
-
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nome Artistico Incorreto]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    } else if (diretor.data_nascimento == undefined || diretor.data_nascimento.length != 10) {
+    } else if (ator.data_nascimento == undefined || ator.data_nascimento.length != 10) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data De Nascimento Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if (diretor.nacionalidade == undefined || diretor.nacionalidade.length > 50) {
+    } else if (ator.nacionalidade == undefined || ator.nacionalidade.length > 100) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nacionalidade Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if (diretor.biografia == undefined) {
+    } else if (ator.biografia == undefined) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Biografia Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if (diretor.foto_url == undefined || diretor.foto_url.length > 200) {
+    } else if (ator.foto_url == undefined || ator.foto_url.length > 200) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Foto Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
@@ -269,9 +265,9 @@ const validarDadosDiretor = async function (diretor) {
 
 }
 module.exports = {
-    listarDiretores,
-    buscarDiretorID,
-    inserirDiretor,
-    atualizarDiretor,
-    excluirDiretor
+    listarAtores,
+    buscarAtorID,
+    inserirAtor,
+    atualizarAtor,
+    excluirAtor
 }

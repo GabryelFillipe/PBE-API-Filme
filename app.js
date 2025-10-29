@@ -17,6 +17,8 @@ const controllerFilme = require('./controller/filme/controller_filme.js')
 
 const controllerDiretor = require('./controller/diretor/controller_diretor.js')
 
+const controllerAtor = require('./controller/ator/controller_ator.js')
+
 // Retorna a porta do servidor atual ou coloca uma porta local
 const PORT = process.PORT || 8080
 
@@ -93,7 +95,7 @@ app.delete('/v1/locadora/filme/:id', cors(),  async function (request, response)
     let idFilme = request.params.id
 
     let filme = await controllerFilme.excluirFilme(idFilme)
-    //console.log(filme)
+
     response.status(filme.status_code).json(filme)
 })
 
@@ -158,6 +160,70 @@ app.delete('/v1/locadora/diretor/:id', cors(), async function (request, response
     let diretor = await controllerDiretor.excluirDiretor(idDiretor)
 
     response.status(diretor.status_code).json(diretor)
+
+})
+
+// Retorna a lista de todos os atores
+app.get('/v1/locadora/ator', cors(), async function (request, response) {
+    let atores = await controllerAtor.listarAtores()
+
+    response.status(atores.status_code).json(atores)
+})
+
+// Retorna um ator filtrando pelo ID
+app.get('/v1/locadora/ator/:id', cors(), async function (request, response) {
+
+    let idAtor = request.params.id
+
+    let ator = await controllerAtor.buscarAtorID(idAtor)
+
+    response.status(ator.status_code).json(ator)
+
+})
+
+// Adiciona um ator ao BD 
+app.post('/v1/locadora/ator', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe os dados do Body da Requisição (Se utililar o bodyParser, é obrigatorio ter no endPoint)
+    let dadosBody = request.body
+    
+    // Recebe o tipo de dados da requisição (JSON ou XML ou ...)
+    let contentType = request.headers['content-type']
+    
+    // Chama a função para inserir um diretor ao BD
+    let ator = await controllerAtor.inserirAtor(dadosBody, contentType)
+    
+    
+    response.status(ator.status_code).json(ator)
+
+})
+
+//Atualiza um ator do BD
+app.put('/v1/locadora/ator/:id', cors(), bodyParserJSON, async function(request, response) {
+    
+    // Recebe o ID via parametro da requisição
+    let idAtor = request.params.id
+
+    // Recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    // Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    let ator = await controllerAtor.atualizarAtor(dadosBody, idAtor, contentType)
+
+    response.status(ator.status_code).json(ator)
+
+})
+
+// Excluir um ator do BD
+app.delete('/v1/locadora/ator/:id', cors(), async function (request, response) {
+    
+    let idAtor = request.params.id
+
+    let ator = await controllerAtor.excluirAtor(idAtor)
+
+    response.status(ator.status_code).json(ator)
 
 })
 
