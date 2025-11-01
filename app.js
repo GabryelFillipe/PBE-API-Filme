@@ -23,6 +23,8 @@ const controllerClassificacao   =   require('./controller/classificacao/controll
 
 const controllerProdutor        =   require('./controller/produtor/controller_produtor.js')
 
+controllerGenero                =   require('./controller/genero/controller_genero.js')
+
 // Retorna a porta do servidor atual ou coloca uma porta local
 const PORT = process.PORT || 8080
 
@@ -358,6 +360,68 @@ app.delete('/v1/locadora/produtor/:id', cors(), async function (request, respons
 
 })
 
+// Retorna a lista de todos os generos
+app.get('/v1/locadora/genero', cors(), async function (request, response) {
+    let genero = await controllerGenero.listarGeneros()
+
+    response.status(genero.status_code).json(genero)
+})
+
+// Retorna um genero filtrando pelo ID
+app.get('/v1/locadora/genero/:id', cors(), async function (request, response) {
+
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.buscarGeneroId(idGenero)
+
+    response.status(genero.status_code).json(genero)
+
+})
+
+// Adiciona um genero ao BD 
+app.post('/v1/locadora/genero', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe os dados do Body da Requisição (Se utililar o bodyParser, é obrigatorio ter no endPoint)
+    let dadosBody = request.body
+
+    // Recebe o tipo de dados da requisição (JSON ou XML ou ...)
+    let contentType = request.headers['content-type']
+
+    // Chama a função para inserir um genero ao BD
+    let genero = await controllerGenero.inserirGenero(dadosBody, contentType)
+
+    response.status(genero.status_code).json(genero)
+
+})
+
+//Atualiza um genero do BD
+app.put('/v1/locadora/genero/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe o ID via parametro da requisição
+    let idGenero = request.params.id
+
+    // Recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    // Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    let genero = await controllerGenero.atualizarGenero(dadosBody, idGenero, contentType)
+
+    response.status(genero.status_code).json(genero)
+
+})
+
+// Excluir um genero do BD
+app.delete('/v1/locadora/genero/:id', cors(), async function (request, response) {
+
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.excluirGenero(idGenero)
+
+    response.status(genero.status_code).json(genero)
+
+})
 
 app.listen(PORT, function () {
     console.log('API Aguardando Requisições!!!')
