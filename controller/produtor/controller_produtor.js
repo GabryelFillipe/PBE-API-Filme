@@ -22,11 +22,11 @@ const listarProdutores = async function () {
 
             if (resultProdutores.length > 0) {
 
-                MESSAGES.DEFAUL_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                MESSAGES.DEFAUL_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                MESSAGES.DEFAUL_HEADER.itens.produtores = resultProdutores
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.items.produtores = resultProdutores
 
-                return MESSAGES.DEFAUL_HEADER //500
+                return MESSAGES.DEFAULT_HEADER //500
 
             } else {
                 return MESSAGES.ERROR_NOT_FOUND // 404
@@ -57,10 +57,11 @@ const buscarProdutorID = async function (id) {
 
                 if (resultProdutores.length > 0) {
 
-                    MESSAGES.DEFAUL_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                    MESSAGES.DEFAUL_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAUL_HEADER.produtor = resultProdutores
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.produtor = resultProdutores
 
+                    return MESSAGES.DEFAULT_HEADER
 
                 } else {
                     return MESSAGES.ERROR_NOT_FOUND // 404
@@ -97,20 +98,18 @@ const inserirProdutor = async function (produtor, contentType) {
 
                 // chama a função de inserir um novo produtor ao BD
                 let resultProdutores = await produtorDAO.setInsertProducers(produtor)
-
-                if (resultProdutores){
+                if (resultProdutores) {
 
                     // Chama a função para procurar o ultimo ID de produtor adicionado no BD
                     let lastId = await produtorDAO.getSelectLastID()
-
-                    if (lastId){
+                    if (lastId) {
 
                         produtor.id = lastId
-                        MESSAGES.DEFAUL_HEADER.status           =   MESSAGES.SUCESS_REQUEST.status
-                        MESSAGES.DEFAUL_HEADER.status_code      =   MESSAGES.SUCESS_REQUEST.status_code
-                        MESSAGES.DEFAUL_HEADER.produtor         =   resultProdutores
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                        MESSAGES.DEFAULT_HEADER.produtor = resultProdutores
 
-                        return MESSAGES.DEFAUL_HEADER //200
+                        return MESSAGES.DEFAULT_HEADER //200
 
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
@@ -128,8 +127,6 @@ const inserirProdutor = async function (produtor, contentType) {
             return MESSAGES.ERRO_CONTENT_TYPE // 415 
         }
 
-
-
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
@@ -137,11 +134,98 @@ const inserirProdutor = async function (produtor, contentType) {
 }
 
 const atualizarProdutor = async function (produtor, id, contentType) {
-    
+
+    // Criando um objeto novo para que um não interfira no outro
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
+
+    try {
+
+        // Validação do tipo de conteudo da requisição. (Obrigatorio ser um JSON)
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+
+            // Chama a função de validar todos os dados do filme 
+            let validar = await validarDadosProdutor(produtor)
+
+            if (!validar) {
+
+                // Validação de ID válido, chama a função da controller que verifica no BD se o ID existe
+                let validarID = await buscarProdutorID(id)
+                                    console.log(validarID)
+
+                if (validarID.status_code == 200) {
+
+                    // Adiciona o ID do filme no JSON de dados para ser encaminhados ao DA
+                    produtor.id = Number(id)
+
+                    // Processamento
+                    // Chama a função para atualizar um produtor no BD
+                    let resultProdutores = await produtorDAO.setUpdateProducer(produtor)
+                    console.log(resultProdutores)
+                    if (resultProdutores) {
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_UPDATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_UPDATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items.produtor = produtor
+
+                        return MESSAGES.DEFAULT_HEADER // 201
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                    }
+                } else {
+                    return validarID // A função poderá retornar (400 ou 404 ou 500)
+                }
+
+            } else {
+                return validar // 400 referente a validação dos dados
+            }
+
+        } else {
+            return MESSAGES.ERRO_CONTENT_TYPE // 415
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+
 }
 
 const excluirProdutor = async function (id) {
-    
+
+    // Criando um objeto novo para que um nõo interfira no outro
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
+
+    try {
+
+        let validarID = await buscarProdutorID(id)
+
+
+        if (validarID.status_code == 200) {
+
+
+            // Processamento
+            // Chama a função para atualizar um filme no BD
+            let resultProdutores = await produtorDAO.setDeleteProducer(id)
+
+            if (resultProdutores) {
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_DELETED_ITEM.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_DELETED_ITEM.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_DELETED_ITEM.message
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+        } else {
+            return validarID // A função buscarAtorId poderá retornar (400 ou 404 ou 500)
+        }
+
+    } catch (error) {
+
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+
 }
 
 // Validação dos dados de cadastro e atualização do diretor

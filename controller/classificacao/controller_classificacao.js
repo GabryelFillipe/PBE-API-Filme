@@ -52,7 +52,6 @@ const buscarClassificacaoID = async function (id) {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
             let resultClassificacao = await classificacaoDAO.getSelectByIdClassificacao(Number(id))
-            console.log(resultClassificacao)
             if (resultClassificacao) {
                 
                 if (resultClassificacao.length > 0) {

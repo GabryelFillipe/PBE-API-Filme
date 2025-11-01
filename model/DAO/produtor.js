@@ -61,7 +61,7 @@ const getSelectLastID = async function () {
         let result = await prisma.$queryRawUnsafe(sql)
 
         if (Array.isArray(result)) {
-            return Number(result[0].ator_id)
+            return Number(result[0].produtor_id)
         } else {
             return false
         }
@@ -79,8 +79,11 @@ const setInsertProducers = async function (produtor) {
 
         let sql = `INSERT INTO tbl_produtor (
                         nome, 
-                        foto_url
-                    VALUES (
+                        data_nascimento,
+                        nacionalidade,
+                        foto_url,
+                        biografia)
+                 VALUES (
                         '${produtor.nome}',
                         '${produtor.data_nascimento}',
                         '${produtor.nacionalidade}',
@@ -103,7 +106,7 @@ const setInsertProducers = async function (produtor) {
 
 }
 
-const setUpdateProducer = async function (ator) {
+const setUpdateProducer = async function (produtor) {
 
     try {
 
@@ -124,6 +127,8 @@ const setUpdateProducer = async function (ator) {
             return false
 
     } catch (error) {
+        console.log(error)
+
         return false
     }
 

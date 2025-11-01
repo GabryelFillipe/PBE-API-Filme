@@ -21,7 +21,6 @@ const listarFilmes = async function () {
     try {
         // Chama a função do DAO para retornar a lista de filmes do BD
         let resultFilmes = await filmeDAO.getSelectAllMovies()
-        console.log(resultFilmes)
         if (resultFilmes) {
             if (resultFilmes.length > 0) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status

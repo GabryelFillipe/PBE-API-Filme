@@ -295,6 +295,69 @@ app.delete('/v1/locadora/classificacao/:id', cors(), async function (request, re
 
 })
 
+// Retorna a lista de todos as produtor
+app.get('/v1/locadora/produtor', cors(), async function (request, response) {
+    let produtor = await controllerProdutor.listarProdutores()
+
+    response.status(produtor.status_code).json(produtor)
+})
+
+// Retorna uma produtor filtrando pelo ID
+app.get('/v1/locadora/produtor/:id', cors(), async function (request, response) {
+
+    let idProdutor = request.params.id
+
+    let produtor = await controllerProdutor.buscarProdutorID(idProdutor)
+
+    response.status(produtor.status_code).json(produtor)
+
+})
+
+// Adiciona um produtor ao BD 
+app.post('/v1/locadora/produtor', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe os dados do Body da Requisição (Se utililar o bodyParser, é obrigatorio ter no endPoint)
+    let dadosBody = request.body
+    
+    // Recebe o tipo de dados da requisição (JSON ou XML ou ...)
+    let contentType = request.headers['content-type']
+    
+    // Chama a função para inserir um diretor ao BD
+    let produtor = await controllerProdutor.inserirProdutor(dadosBody, contentType)
+    
+    response.status(produtor.status_code).json(produtor)
+
+})
+
+//Atualiza uma produtor do BD
+app.put('/v1/locadora/produtor/:id', cors(), bodyParserJSON, async function(request, response) {
+    
+    // Recebe o ID via parametro da requisição
+    let idProdutor = request.params.id
+
+    // Recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    // Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    let produtor = await controllerProdutor.atualizarProdutor(dadosBody, idProdutor, contentType)
+    
+    response.status(produtor.status_code).json(produtor)
+
+})
+
+// Excluir um produtor do BD
+app.delete('/v1/locadora/produtor/:id', cors(), async function (request, response) {
+    
+    let idProdutor = request.params.id
+
+    let produtor = await controllerProdutor.excluirProdutor(idProdutor)
+
+    response.status(produtor.status_code).json(produtor)
+
+})
+
 
 app.listen(PORT, function () {
     console.log('API Aguardando Requisições!!!')
