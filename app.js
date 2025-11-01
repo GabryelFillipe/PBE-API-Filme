@@ -25,6 +25,8 @@ const controllerProdutor        =   require('./controller/produtor/controller_pr
 
 controllerGenero                =   require('./controller/genero/controller_genero.js')
 
+controllerEstudio               =   require('./controller/estudio/controller_estudio.js')
+
 // Retorna a porta do servidor atual ou coloca uma porta local
 const PORT = process.PORT || 8080
 
@@ -420,6 +422,69 @@ app.delete('/v1/locadora/genero/:id', cors(), async function (request, response)
     let genero = await controllerGenero.excluirGenero(idGenero)
 
     response.status(genero.status_code).json(genero)
+
+})
+
+// Retorna a lista de todos os estudios
+app.get('/v1/locadora/estudio', cors(), async function (request, response) {
+    let estudio = await controllerEstudio.listarEstudios()
+
+    response.status(estudio.status_code).json(estudio)
+})
+
+// Retorna um estudio filtrando pelo ID
+app.get('/v1/locadora/estudio/:id', cors(), async function (request, response) {
+
+    let idEstudio = request.params.id
+
+    let estudio = await controllerEstudio.buscarEstudioId(idEstudio)
+
+    response.status(estudio.status_code).json(estudio)
+
+})
+
+// Adiciona um estudio ao BD 
+app.post('/v1/locadora/estudio', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe os dados do Body da Requisição
+    let dadosBody = request.body
+
+    // Recebe o tipo de dados da requisição
+    let contentType = request.headers['content-type']
+
+    // Chama a função para inserir um estudio ao BD
+    let estudio = await controllerEstudio.inserirEstudio(dadosBody, contentType)
+
+    response.status(estudio.status_code).json(estudio)
+
+})
+
+//Atualiza um estudio do BD
+app.put('/v1/locadora/estudio/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    // Recebe o ID via parametro da requisição
+    let idEstudio = request.params.id
+
+    // Recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    // Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    let estudio = await controllerEstudio.atualizarEstudio(dadosBody, idEstudio, contentType)
+
+    response.status(estudio.status_code).json(estudio)
+
+})
+
+// Excluir um estudio do BD
+app.delete('/v1/locadora/estudio/:id', cors(), async function (request, response) {
+
+    let idEstudio = request.params.id
+
+    let estudio = await controllerEstudio.excluirEstudio(idEstudio)
+
+    response.status(estudio.status_code).json(estudio)
 
 })
 
