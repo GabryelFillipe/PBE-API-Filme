@@ -1,11 +1,10 @@
 openapi: 3.0.3
 info:
-  title: Projeto do SENAI Jandira - Professor Marcel
+  title: Projeto Locadora de Filmes - SENAI Jandira
   description: |-
-   API destinada a controle de alunos
-  termsOfService: http://swagger.io/terms/
+    API destinada ao controle de uma locadora de filmes, gerenciando filmes, atores, diretores, produtores, gêneros, estúdios e classificações.
   contact:
-    email: seunome@email.com
+    email: gabryel.fillipe@email.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -14,136 +13,942 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: http://
+  - url: http://localhost:8080
 paths:
-  /v1/aluno:
+  /v1/locadora/filme:
     post:
       tags:
-        - aluno
-      summary: Adiciona um novo Aluno
-      description: Adiciona um novo Aluno
+        - Filme
+      summary: Adiciona um novo Filme
+      description: Adiciona um novo Filme ao banco de dados
       requestBody:
-        description: JSON contendo os dados do anovo aluno a ser inserido no sistema
+        description: JSON contendo os dados do novo filme
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Aluno'
+              $ref: '#/components/schemas/Filme'
         required: true
       responses:
         '201':
-          description: Successful operation
+          description: Filme criado com sucesso
         '400':
-          description: Invalid input
+          description: Dados de entrada inválidos (campos obrigatórios)
+        '415':
+          description: Content-Type inválido (esperado application/json)
     get:
       tags:
-        - aluno
-      summary: Lista todos os alunos
-      description: Listagem de todos os alunos registrados no sistema
+        - Filme
+      summary: Lista todos os Filmes
+      description: Listagem de todos os filmes registrados no sistema
       responses:
         '200':
-          description: successful operation
+          description: Listagem de filmes bem-sucedida
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Aluno'          
-           
+                  $ref: '#/components/schemas/Filme'
         '404':
-          description: Not Found
-  /v1/aluno/{id}:
+          description: Nenhum filme encontrado
+  /v1/locadora/filme/{id}:
     get:
       tags:
-        - aluno
-      summary: Busca um aluno prlo ID
-      description: Retorna um aluno pelo ID
+        - Filme
+      summary: Busca um filme pelo ID
+      description: Retorna um único filme pelo ID
       parameters:
         - name: id
           in: path
-          description: ID of pet to return
+          description: ID do filme a ser retornado
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
-          description: successful operation
+          description: Filme encontrado com sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Aluno'          
+                $ref: '#/components/schemas/Filme'
         '400':
-          description: Invalid ID supplied
+          description: ID inválido
         '404':
-          description: Pet not found
+          description: Filme não encontrado
     put:
       tags:
-        - aluno
-      summary: Update an existing pet
-      description: Update an existing pet by Id
+        - Filme
+      summary: Atualiza um filme existente
+      description: Atualiza um filme existente pelo ID
       parameters:
         - name: id
           in: path
-          description: ID of pet to return
+          description: ID do filme a ser atualizado
           required: true
           schema:
             type: integer
-            format: int64
       requestBody:
-        description: Update an existent pet in the store
+        description: JSON contendo os dados do filme a ser atualizado
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Aluno'
+              $ref: '#/components/schemas/Filme'
         required: true
       responses:
         '200':
-          description: Successful operation
+          description: Filme atualizado com sucesso
         '400':
-          description: Invalid ID supplied
+          description: ID ou dados de entrada inválidos
         '404':
-          description: Pet not found
-       
+          description: Filme não encontrado
     delete:
       tags:
-        - aluno
-      summary: Delete aluno
-      description: Excluir um aluno
+        - Filme
+      summary: Exclui um filme
+      description: Exclui um filme pelo ID
       parameters:
         - name: id
           in: path
-          description: ID of pet to return
+          description: ID do filme a ser excluído
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
-          description: successful operation
+          description: Filme excluído com sucesso
         '400':
-          description: Invalid ID supplied
+          description: ID inválido
         '404':
-          description: Pet not found
+          description: Filme não encontrado
+
+  /v1/locadora/ator:
+    post:
+      tags:
+        - Ator
+      summary: Adiciona um novo Ator
+      description: Adiciona um novo Ator ao banco de dados
+      requestBody:
+        description: JSON contendo os dados do novo ator
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ator'
+        required: true
+      responses:
+        '201':
+          description: Ator criado com sucesso
+        '400':
+          description: Dados de entrada inválidos
+    get:
+      tags:
+        - Ator
+      summary: Lista todos os Atores
+      description: Listagem de todos os atores registrados no sistema
+      responses:
+        '200':
+          description: Listagem de atores bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ator'
+        '404':
+          description: Nenhum ator encontrado
+  /v1/locadora/ator/{id}:
+    get:
+      tags:
+        - Ator
+      summary: Busca um ator pelo ID
+      description: Retorna um único ator pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do ator a ser retornado
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ator encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ator'
+        '400':
+          description: ID inválido
+        '404':
+          description: Ator não encontrado
+    put:
+      tags:
+        - Ator
+      summary: Atualiza um ator existente
+      description: Atualiza um ator existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do ator a ser atualizado
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON contendo os dados do ator
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ator'
+        required: true
+      responses:
+        '200':
+          description: Ator atualizado com sucesso
+        '400':
+          description: ID ou dados de entrada inválidos
+        '404':
+          description: Ator não encontrado
+    delete:
+      tags:
+        - Ator
+      summary: Exclui um ator
+      description: Exclui um ator pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do ator a ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ator excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Ator não encontrado
+
+  /v1/locadora/diretor:
+    post:
+      tags:
+        - Diretor
+      summary: Adiciona um novo Diretor
+      description: Adiciona um novo Diretor ao banco de dados
+      requestBody:
+        description: JSON contendo os dados do novo diretor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diretor'
+        required: true
+      responses:
+        '201':
+          description: Diretor criado com sucesso
+        '400':
+          description: Dados de entrada inválidos
+    get:
+      tags:
+        - Diretor
+      summary: Lista todos os Diretores
+      description: Listagem de todos os diretores registrados no sistema
+      responses:
+        '200':
+          description: Listagem de diretores bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Diretor'
+        '404':
+          description: Nenhum diretor encontrado
+  /v1/locadora/diretor/{id}:
+    get:
+      tags:
+        - Diretor
+      summary: Busca um diretor pelo ID
+      description: Retorna um único diretor pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do diretor a ser retornado
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diretor encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diretor'
+        '400':
+          description: ID inválido
+        '404':
+          description: Diretor não encontrado
+    put:
+      tags:
+        - Diretor
+      summary: Atualiza um diretor existente
+      description: Atualiza um diretor existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do diretor a ser atualizado
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON contendo os dados do diretor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diretor'
+        required: true
+      responses:
+        '200':
+          description: Diretor atualizado com sucesso
+        '400':
+          description: ID ou dados de entrada inválidos
+        '404':
+          description: Diretor não encontrado
+    delete:
+      tags:
+        - Diretor
+      summary: Exclui um diretor
+      description: Exclui um diretor pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do diretor a ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diretor excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Diretor não encontrado
+
+  /v1/locadora/produtor:
+    post:
+      tags:
+        - Produtor
+      summary: Adiciona um novo Produtor
+      description: Adiciona um novo Produtor ao banco de dados
+      requestBody:
+        description: JSON contendo os dados do novo produtor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produtor'
+        required: true
+      responses:
+        '201':
+          description: Produtor criado com sucesso
+        '400':
+          description: Dados de entrada inválidos
+    get:
+      tags:
+        - Produtor
+      summary: Lista todos os Produtores
+      description: Listagem de todos os produtores registrados no sistema
+      responses:
+        '200':
+          description: Listagem de produtores bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produtor'
+        '404':
+          description: Nenhum produtor encontrado
+  /v1/locadora/produtor/{id}:
+    get:
+      tags:
+        - Produtor
+      summary: Busca um produtor pelo ID
+      description: Retorna um único produtor pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do produtor a ser retornado
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produtor encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produtor'
+        '400':
+          description: ID inválido
+        '404':
+          description: Produtor não encontrado
+    put:
+      tags:
+        - Produtor
+      summary: Atualiza um produtor existente
+      description: Atualiza um produtor existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do produtor a ser atualizado
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON contendo os dados do produtor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produtor'
+        required: true
+      responses:
+        '200':
+          description: Produtor atualizado com sucesso
+        '400':
+          description: ID ou dados de entrada inválidos
+        '404':
+          description: Produtor não encontrado
+    delete:
+      tags:
+        - Produtor
+      summary: Exclui um produtor
+      description: Exclui um produtor pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do produtor a ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produtor excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Produtor não encontrado
+
+  /v1/locadora/genero:
+    post:
+      tags:
+        - Genero
+      summary: Adiciona um novo Gênero
+      description: Adiciona um novo Gênero ao banco de dados
+      requestBody:
+        description: JSON contendo os dados do novo gênero
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genero'
+        required: true
+      responses:
+        '201':
+          description: Gênero criado com sucesso
+        '400':
+          description: Dados de entrada inválidos
+    get:
+      tags:
+        - Genero
+      summary: Lista todos os Gêneros
+      description: Listagem de todos os gêneros registrados no sistema
+      responses:
+        '200':
+          description: Listagem de gêneros bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genero'
+        '404':
+          description: Nenhum gênero encontrado
+  /v1/locadora/genero/{id}:
+    get:
+      tags:
+        - Genero
+      summary: Busca um gênero pelo ID
+      description: Retorna um único gênero pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do gênero a ser retornado
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gênero encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genero'
+        '400':
+          description: ID inválido
+        '404':
+          description: Gênero não encontrado
+    put:
+      tags:
+        - Genero
+      summary: Atualiza um gênero existente
+      description: Atualiza um gênero existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do gênero a ser atualizado
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON contendo os dados do gênero
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genero'
+        required: true
+      responses:
+        '200':
+          description: Gênero atualizado com sucesso
+        '400':
+          description: ID ou dados de entrada inválidos
+        '404':
+          description: Gênero não encontrado
+    delete:
+      tags:
+        - Genero
+      summary: Exclui um gênero
+      description: Exclui um gênero pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do gênero a ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gênero excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Gênero não encontrado
+
+  /v1/locadora/estudio:
+    post:
+      tags:
+        - Estudio
+      summary: Adiciona um novo Estúdio
+      description: Adiciona um novo Estúdio ao banco de dados
+      requestBody:
+        description: JSON contendo os dados do novo estúdio
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Estudio'
+        required: true
+      responses:
+        '201':
+          description: Estúdio criado com sucesso
+        '400':
+          description: Dados de entrada inválidos
+    get:
+      tags:
+        - Estudio
+      summary: Lista todos os Estúdios
+      description: Listagem de todos os estúdios registrados no sistema
+      responses:
+        '200':
+          description: Listagem de estúdios bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Estudio'
+        '404':
+          description: Nenhum estúdio encontrado
+  /v1/locadora/estudio/{id}:
+    get:
+      tags:
+        - Estudio
+      summary: Busca um estúdio pelo ID
+      description: Retorna um único estúdio pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do estúdio a ser retornado
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Estúdio encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estudio'
+        '400':
+          description: ID inválido
+        '404':
+          description: Estúdio não encontrado
+    put:
+      tags:
+        - Estudio
+      summary: Atualiza um estúdio existente
+      description: Atualiza um estúdio existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do estúdio a ser atualizado
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON contendo os dados do estúdio
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Estudio'
+        required: true
+      responses:
+        '200':
+          description: Estúdio atualizado com sucesso
+        '400':
+          description: ID ou dados de entrada inválidos
+        '404':
+          description: Estúdio não encontrado
+    delete:
+      tags:
+        - Estudio
+      summary: Exclui um estúdio
+      description: Exclui um estúdio pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID do estúdio a ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Estúdio excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Estúdio não encontrado
+
+  /v1/locadora/classificacao:
+    post:
+      tags:
+        - Classificacao
+      summary: Adiciona uma nova Classificação
+      description: Adiciona uma nova Classificação ao banco de dados
+      requestBody:
+        description: JSON contendo os dados da nova classificação
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Classificacao'
+        required: true
+      responses:
+        '201':
+          description: Classificação criada com sucesso
+        '400':
+          description: Dados de entrada inválidos
+    get:
+      tags:
+        - Classificacao
+      summary: Lista todas as Classificações
+      description: Listagem de todas as classificações registradas no sistema
+      responses:
+        '200':
+          description: Listagem de classificações bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Classificacao'
+        '404':
+          description: Nenhuma classificação encontrada
+  /v1/locadora/classificacao/{id}:
+    get:
+      tags:
+        - Classificacao
+      summary: Busca uma classificação pelo ID
+      description: Retorna uma única classificação pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID da classificação a ser retornada
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Classificação encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classificacao'
+        '400':
+          description: ID inválido
+        '404':
+          description: Classificação não encontrada
+    put:
+      tags:
+        - Classificacao
+      summary: Atualiza uma classificação existente
+      description: Atualiza uma classificação existente pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID da classificação a ser atualizada
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON contendo os dados da classificação
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Classificacao'
+        required: true
+      responses:
+        '200':
+          description: Classificação atualizada com sucesso
+        '400':
+          description: ID ou dados de entrada inválidos
+        '404':
+          description: Classificação não encontrada
+    delete:
+      tags:
+        - Classificacao
+      summary: Exclui uma classificação
+      description: Exclui uma classificação pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID da classificação a ser excluída
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Classificação excluída com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Classificação não encontrada
+
 components:
   schemas:
-    Aluno:
+    Filme:
       required:
         - nome
+        - sinopse
+        - data_lancamento
+        - duracao
+        - orcamento
+        - capa
+        - trailer
       type: object
       properties:
         id:
           type: integer
+          example: 1
         nome:
           type: string
-        celular:
+          example: 'Como Treinar o Seu Dragão'
+        sinopse:
           type: string
-        email:
+          example: 'Um jovem viking faz amizade com um dragão...'
+        data_lancamento:
           type: string
+          format: date
+          example: '2025-06-13'
+        duracao:
+          type: string
+          example: '01:45:00'
+        orcamento:
+          type: number
+          format: float
+          example: 150000000
+        trailer:
+          type: string
+          example: 'https://www.youtube.com/watch?v=...'
+        capa:
+          type: string
+          example: 'https://url_da_imagem_da_capa.jpg'
+    Ator:
+      required:
+        - nome
+      type: object
+      properties:
+        ator_id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: 'Mason Thames'
+        data_nascimento:
+          type: string
+          format: date
+          example: '2007-07-10'
+        nacionalidade:
+          type: string
+          example: 'Americano'
+        foto_url:
+          type: string
+          example: 'https://url_da_foto.jpg'
+        biografia:
+          type: string
+          example: 'Mason Thames é um ator americano...'
+    Diretor:
+      required:
+        - nome
+      type: object
+      properties:
+        diretor_id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: 'Dean DeBlois'
+        data_nascimento:
+          type: string
+          format: date
+          example: '1970-06-07'
+        nacionalidade:
+          type: string
+          example: 'Canadense'
+        foto_url:
+          type: string
+          example: 'https://url_da_foto.jpg'
+        biografia:
+          type: string
+          example: 'Cineasta e animador canadense...'
+    Produtor:
+      required:
+        - nome
+      type: object
+      properties:
+        produtor_id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: 'Marc Platt'
+        data_nascimento:
+          type: string
+          format: date
+          example: '1957-04-14'
+        nacionalidade:
+          type: string
+          example: 'Americano'
+        foto_url:
+          type: string
+          example: 'https://url_da_foto.jpg'
+        biografia:
+          type: string
+          example: 'Produtor americano de cinema...'
+    Genero:
+      required:
+        - nome
+      type: object
+      properties:
+        genero_id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: 'Aventura'
+        descricao:
+          type: string
+          example: 'Filmes que envolvem jornadas, perigos e exploração...'
+    Estudio:
+      required:
+        - nome
+      type: object
+      properties:
+        estudio_id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: 'Universal Pictures'
+        pais_origem:
+          type: string
+          example: 'Estados Unidos'
+        data_fundacao:
+          type: string
+          format: date
+          example: '1912-04-30'
+        site_oficial:
+          type: string
+          example: 'https://www.universalpictures.com/'
+    Classificacao:
+      required:
+        - nome
+      type: object
+      properties:
+        classificacao_id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: '10 Anos'
+        descricao:
+          type: string
+          example: 'Não recomendado para menores de 10 anos. Contém violência.'
+        icone_url:
+          type: string
+          example: '/icones/classificacao_10_anos.png'
+
   requestBodies:
-    Aluno:
-      description: Objeto que deve ser enviado no Body das requisicoes
+    Filme:
+      description: Objeto Filme que deve ser enviado no Body
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Aluno'
-    
+            $ref: '#/components/schemas/Filme'
+    Ator:
+      description: Objeto Ator que deve ser enviado no Body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ator'
+    Diretor:
+      description: Objeto Diretor que deve ser enviado no Body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Diretor'
+    Produtor:
+      description: Objeto Produtor que deve ser enviado no Body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Produtor'
+    Genero:
+      description: Objeto Genero que deve ser enviado no Body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Genero'
+    Estudio:
+      description: Objeto Estudio que deve ser enviado no Body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Estudio'
+    Classificacao:
+      description: Objeto Classificacao que deve ser enviado no Body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Classificacao'
