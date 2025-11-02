@@ -8,10 +8,6 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const bodyParser = require('body-parser');
-
-// Cria um objeto especialista no formato JSON para receber dados via post e put
-const bodyParserJSON = bodyParser.json();
 
 // Importa o controller
 const controllerDiretor = require('../controller/diretor/controller_diretor.js');
@@ -30,7 +26,7 @@ router.get('/:id', cors(), async function (request, response) {
 })
 
 // Adiciona um diretor ao BD 
-router.post('/', cors(), bodyParserJSON, async function (request, response) {
+router.post('/', cors(),  async function (request, response) {
     let dadosBody = request.body
     let contentType = request.headers['content-type']
     let diretor = await controllerDiretor.inserirDiretor(dadosBody, contentType)
@@ -38,7 +34,7 @@ router.post('/', cors(), bodyParserJSON, async function (request, response) {
 })
 
 //Atualiza um diretor do BD
-router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
+router.put('/:id', cors(), async function (request, response) {
     let idDiretor = request.params.id
     let dadosBody = request.body
     let contentType = request.headers['content-type']

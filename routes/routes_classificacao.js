@@ -8,10 +8,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
-// Cria um objeto especialista no formato JSON para receber dados via post e put
-const bodyParserJSON = bodyParser.json();
 
 // Importa o controller
 const controllerClassificacao = require('../controller/classificacao/controller_classificacao.js');
@@ -30,7 +27,7 @@ router.get('/:id', cors(), async function (request, response) {
 })
 
 // Adiciona uma classificacao ao BD 
-router.post('/', cors(), bodyParserJSON, async function (request, response) {
+router.post('/', cors(),  async function (request, response) {
     let dadosBody = request.body
     let contentType = request.headers['content-type']
     let classificacao = await controllerClassificacao.inserirClassificacao(dadosBody, contentType)
@@ -38,7 +35,7 @@ router.post('/', cors(), bodyParserJSON, async function (request, response) {
 })
 
 //Atualiza uma classificação do BD
-router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
+router.put('/:id', cors(),  async function (request, response) {
     let idClassificacao = request.params.id
     let dadosBody = request.body
     let contentType = request.headers['content-type']

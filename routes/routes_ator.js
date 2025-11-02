@@ -8,10 +8,8 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
-// Cria um objeto especialista no formato JSON para receber dados via post e put
-const bodyParserJSON = bodyParser.json();
+
 
 // Importa o controller
 const controllerAtor = require('../controller/ator/controller_ator.js');
@@ -30,7 +28,7 @@ router.get('/:id', cors(), async function (request, response) {
 })
 
 // Adiciona um ator ao BD 
-router.post('/', cors(), bodyParserJSON, async function (request, response) {
+router.post('/', cors(),  async function (request, response) {
     let dadosBody = request.body
     let contentType = request.headers['content-type']
     let ator = await controllerAtor.inserirAtor(dadosBody, contentType)
@@ -38,7 +36,7 @@ router.post('/', cors(), bodyParserJSON, async function (request, response) {
 })
 
 //Atualiza um ator do BD
-router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
+router.put('/:id', cors(),  async function (request, response) {
     let idAtor = request.params.id
     let dadosBody = request.body
     let contentType = request.headers['content-type']

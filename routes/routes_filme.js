@@ -8,10 +8,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
-// Cria um objeto especialista no formato JSON para receber dados via post e put
-const bodyParserJSON = bodyParser.json();
 
 // Importa o controller de filme
 const controllerFilme = require('../controller/filme/controller_filme.js');
@@ -33,7 +30,7 @@ router.get('/:id', cors(), async function (request, response) {
 
 // Adiciona um filme ao BD
 // ( /v1/locadora/filme )
-router.post('/', cors(), bodyParserJSON, async function (request, response) {
+router.post('/', cors(),  async function (request, response) {
     let dadosBody = request.body
     let contentType = request.headers['content-type']
     let filme = await controllerFilme.inserirFilme(dadosBody, contentType)
@@ -42,7 +39,7 @@ router.post('/', cors(), bodyParserJSON, async function (request, response) {
 
 // Atualiza um filme do BD
 // ( /v1/locadora/filme/:id )
-router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
+router.put('/:id', cors(),  async function (request, response) {
     let idFilme = request.params.id
     let dadosBody = request.body
     let contentType = request.headers['content-type']
