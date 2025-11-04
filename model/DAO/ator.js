@@ -100,7 +100,6 @@ const setInsertActors = async function (ator) {
         }
 
     } catch (error) {
-        console.log(error)
         return false
 
     }
@@ -128,7 +127,6 @@ const setUpdateActors = async function (ator) {
             return false
 
     } catch (error) {
-        console.log(error)
         return false
     }
 

@@ -95,12 +95,6 @@ const setInsertGenero = async function (genero) {
 
     } catch (error)
     {
-        // Tratamento de erro para violação de constraint (aspas simples)
-        if (error.code === 'P2010' && error.meta?.code === '1064') {
-             console.error("Erro de sintaxe SQL: Verifique se há aspas simples nos dados (ex: biografia).");
-         } else {
-            console.log(error)
-         }
         return false
     }
 
@@ -125,12 +119,6 @@ const setUpdateGenero = async function (genero) {
             return false
 
     } catch (error) {
-         // Tratamento de erro para violação de constraint (aspas simples)
-         if (error.code === 'P2010' && error.meta?.code === '1064') {
-            console.error("Erro de sintaxe SQL: Verifique se há aspas simples nos dados (ex: biografia).");
-        } else {
-           console.log(error)
-        }
        return false
     }
 

@@ -24,7 +24,8 @@ app.use((request, response, next) => {
     next() // Próximo, carregar os proximos endPoints
 })
 
-
+// Usado para substituir a variavel bodyParserJSON
+//  assim fazendo com que não seja necessario passa-la toda vez que for usar o endPoint
 app.use(express.json())
 
 // --- Importação dos Arquivos de Rota ---
@@ -36,9 +37,7 @@ const produtorRoutes        = require('./routes/routes_produtor.js');
 const generoRoutes          = require('./routes/routes_genero.js');
 const estudioRoutes         = require('./routes/routes_estudio.js');
 
-// --- Definição dos Endpoints com prefixo ---
-// Define que todos os endpoints que chegarem com '/v1/locadora/filme'
-// serão gerenciados pelo arquivo 'filme_routes.js'
+// EndPoints da API
 app.use('/v1/locadora/filme', filmeRoutes);
 app.use('/v1/locadora/diretor', diretorRoutes);
 app.use('/v1/locadora/ator', atorRoutes);

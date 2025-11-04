@@ -98,7 +98,6 @@ const setInsertEstudio = async function (estudio) {
             return false
 
     } catch (error) {
-        console.log(error)
         return false
     }
 
@@ -125,7 +124,6 @@ const setUpdateEstudio = async function (estudio) {
             return false
 
     } catch (error) {
-        console.log(error)
         return false
     }
 

@@ -12,7 +12,7 @@ const { PrismaClient } = require('../../generated/prisma')
 // Cria um novo objeto baseado na classe do PrismaClient
 const prisma = new PrismaClient()
 
-
+// Função para buscar todos os produtores no BD
 const getSelectAllProducers = async function () {
 
     try {
@@ -33,6 +33,7 @@ const getSelectAllProducers = async function () {
 
 }
 
+// Função para buscar um Produtor filtrando pelo ID
 const getSelectByIdProducer = async function (id) {
 
     try {
@@ -52,6 +53,7 @@ const getSelectByIdProducer = async function (id) {
     }
 }
 
+// Função para buscar o ultimo ID adiiconado ao BD
 const getSelectLastID = async function () {
 
     try {
@@ -73,6 +75,7 @@ const getSelectLastID = async function () {
 
 }
 
+// Função responsavel por inserir novos produtores no BD
 const setInsertProducers = async function (produtor) {
 
     try {
@@ -106,6 +109,7 @@ const setInsertProducers = async function (produtor) {
 
 }
 
+// Função para atualizar um produtor no BD
 const setUpdateProducer = async function (produtor) {
 
     try {
@@ -127,13 +131,12 @@ const setUpdateProducer = async function (produtor) {
             return false
 
     } catch (error) {
-        console.log(error)
-
         return false
     }
 
 }
 
+// Função que exclui um produtor do BD filtrando pelo ID
 const setDeleteProducer = async function (id) {
 
     try {

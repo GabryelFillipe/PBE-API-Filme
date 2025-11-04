@@ -150,7 +150,6 @@ const atualizarProdutor = async function (produtor, id, contentType) {
 
                 // Validação de ID válido, chama a função da controller que verifica no BD se o ID existe
                 let validarID = await buscarProdutorID(id)
-                                    console.log(validarID)
 
                 if (validarID.status_code == 200) {
 
@@ -160,7 +159,6 @@ const atualizarProdutor = async function (produtor, id, contentType) {
                     // Processamento
                     // Chama a função para atualizar um produtor no BD
                     let resultProdutores = await produtorDAO.setUpdateProducer(produtor)
-                    console.log(resultProdutores)
                     if (resultProdutores) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_UPDATED_ITEM.status_code
@@ -185,7 +183,6 @@ const atualizarProdutor = async function (produtor, id, contentType) {
 
 
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 

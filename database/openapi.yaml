@@ -4,7 +4,7 @@ info:
   description: |-
     API destinada ao controle de uma locadora de filmes, gerenciando filmes, atores, diretores, produtores, gêneros, estúdios e classificações.
   contact:
-    email: gabryel.fillipe@email.com
+    email: gabryelfcsilva34@gmail.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
