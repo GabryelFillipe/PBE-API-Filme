@@ -2,7 +2,7 @@
  * Objetivo: Arquivo respossavel pels requisições da API da locadora de filmes
  * Autor: Gabryel Fillipe Cavalcanti da Silva
  * Data: 07/10/2025
- * Versão: 2.0 
+ * Versão: 1.0.1
  ******************************************************************************************************************/
 
 // Importando dependencias da API
