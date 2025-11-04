@@ -1,7 +1,7 @@
 /*******************************************************************************************************************
  * Objetivo: Arquivo respossavel pels requisições da API da locadora de filmes
  * Autor: Gabryel Fillipe Cavalcanti da Silva
- * Data: 07/10/2025
+ * Data: 01/11/2025
  * Versão: 1.0.1
  ******************************************************************************************************************/
 
@@ -25,7 +25,7 @@ app.use((request, response, next) => {
 })
 
 // Usado para substituir a variavel bodyParserJSON
-//  assim fazendo com que não seja necessario passa-la toda vez que for usar o endPoint
+//  assim fazendo com que não seja necessario passa-la toda vez que for usar o endPoint que precise de dados via JSON
 app.use(express.json())
 
 // --- Importação dos Arquivos de Rota ---
