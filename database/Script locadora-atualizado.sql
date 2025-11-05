@@ -140,7 +140,7 @@ CREATE TABLE tbl_filme_producao (
 
 ALTER TABLE tbl_filme
     ADD CONSTRAINT fk_filme_classificacao
-        FOREIGN KEY (cassificacao_id) -- Atenção ao nome da coluna!
+        FOREIGN KEY (cassificacao_id)
         REFERENCES tbl_classificacao(classificacao_id),
     
     ADD CONSTRAINT fk_filme_estudio
@@ -150,3 +150,31 @@ ALTER TABLE tbl_filme
     ADD CONSTRAINT fk_filme_distribuidor
         FOREIGN KEY (distribuidor_id)
         REFERENCES tbl_distribuidor(distribuidor_id);
+
+
+INSERT INTO tbl_genero (
+    nome
+) 
+VALUES
+
+    ('Ação'),
+    ('Comédia'),
+    ('Comédia Romântica'),
+    ('Crime'),
+    ('Documentário'),
+    ('Drama'),
+    ('Esporte'),
+    ('Família'),
+    ('Fantasia'),
+    ('Faroeste'),
+    ('Ficção Científica'),
+    ('Guerra'),
+    ('História'),
+    ('Mistério'),
+    ('Musical'),
+    ('Policial'),
+    ('Romance'),
+    ('Suspense'),
+    ('Biografia');
+
+
