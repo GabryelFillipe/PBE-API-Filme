@@ -77,12 +77,11 @@ const setInsertGenero = async function (genero) {
 
     try {
         let sql = `INSERT into tbl_genero(
-                        nome,
-                        descricao
+                        nome
+                        
                     ) 
                     VALUES(
-                        '${genero.nome}',
-                        '${genero.descricao}'
+                        '${genero.nome}'
                     )`
 
         // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores
@@ -106,8 +105,7 @@ const setUpdateGenero = async function (genero) {
     try {
 
         let sql = `update tbl_genero set
-                    nome        =   '${genero.nome}',
-                    descricao   =   '${genero.descricao}'
+                    nome        =   '${genero.nome}'
                 where genero_id =   ${genero.id}`
 
         // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores

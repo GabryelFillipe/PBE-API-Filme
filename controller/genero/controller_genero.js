@@ -242,12 +242,7 @@ const validarDadosGenero = async function (genero) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nome Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if (genero.descricao == undefined || genero.descricao.length > 200) {
-
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Descrição Incorreta]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    } else {
+     } else {
         return false
     }
 
