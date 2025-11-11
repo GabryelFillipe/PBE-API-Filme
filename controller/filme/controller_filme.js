@@ -27,6 +27,10 @@ const listarFilmes = async function () {
         let resultFilmes = await filmeDAO.getSelectAllMovies()
         if (resultFilmes) {
             if (resultFilmes.length > 0) {
+                resultFilmes.forEach(filme => {
+
+                })
+
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.items.filmes = resultFilmes
@@ -39,6 +43,7 @@ const listarFilmes = async function () {
             return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //404
         }
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -57,14 +62,34 @@ const buscarFilmeId = async function (id) {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
             let resultFilmes = await filmeDAO.getSelectByIdMovies(Number(id))
-
             if (resultFilmes) {
 
                 if (resultFilmes.length > 0) {
 
+                    for (genero of resultFilmes) {
+
+                        let filmeGenero = { filme_id: id }
+
+                        let resultDadosGeneros = await controllerFilmeGenero.listarGenerosIdFilme(filmeGenero.filme_id)
+                        resultFilmes.filme_genero = resultDadosGeneros.items.filme_genero
+                        if (resultDadosGeneros.status_code != 200) {
+
+                            return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+
+                        }
+
+                    }
+
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filme = resultFilmes
+
+                    delete resultFilmes.filme_genero
+                    let resultDadosGeneros = await controllerFilmeGenero.listarGenerosIdFilme(id)
+
+                    resultFilmes.genero = resultDadosGeneros.items.filme_genero
+
+                    MESSAGES.DEFAULT_HEADER.generos = resultFilmes.genero
 
                     return MESSAGES.DEFAULT_HEADER// 200
                 } else {
@@ -82,6 +107,7 @@ const buscarFilmeId = async function (id) {
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
@@ -116,18 +142,37 @@ const inserirFilme = async function (filme, contentType) {
 
                         // Processar a inserção dos dados na tabela de relação 
                         // Entre filme e genero
-                        filme.genero.forEach( async function(genero){
-                            let filmeGenero = {filme_id: lastID, genero_id: genero.genero_id}
-                            let resultFilmesGeneros = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero)
-                        })
+                        for (genero of filme.genero) {
+                            // Cria o JSON com o ID do filme e o ID do genero
+                            let filmeGenero = { filme_id: lastID, genero_id: genero.genero_id }
 
+                            // Encaminha o JSON com o ID do filme e do genero para a controller FilmeGenero
+                            let resultFilmesGeneros = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
+
+                            if (resultFilmesGeneros.status_code != 201) {
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION // 500 Problema na tabela de relação
+                            }
+                        }
 
                         // Adiciona o ID no JSON com os dados do filme
                         filme.id = lastID
-                        MESSAGES.DEFAULT_HEADER.status         =  MESSAGES.SUCESS_CREATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code    =  MESSAGES.SUCESS_CREATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message        =  MESSAGES.SUCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items          =  filme
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_CREATED_ITEM.message
+
+                        // Adicionar no JSON dados do genero
+                        // Apaga o atributo genero apenas com os ids que foram enviados no post
+                        delete filme.genero
+
+                        // Pesquisa no BD todos o sgeneros que foram associados ao filme
+                        let resultDadosGeneros = await controllerFilmeGenero.listarGenerosIdFilme(lastID)
+
+                        // Cria novamente o atributo genero
+                        filme.genero = resultDadosGeneros.items.filme_genero
+
+                        MESSAGES.DEFAULT_HEADER.items = filme
+
+
 
                         return MESSAGES.DEFAULT_HEADER // 201
 

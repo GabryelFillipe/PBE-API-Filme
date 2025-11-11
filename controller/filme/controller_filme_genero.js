@@ -82,7 +82,7 @@ const buscarFilmeGeneroId = async function (id) {
 }
 
 // Retorna um genero filtrando pelo id do filme
-const listarGenerosFilme = async function (idFilme) {
+const listarGenerosIdFilme = async function (idFilme) {
 
     // Criando um objeto novo para que um não interfira no outro
     let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
@@ -93,15 +93,14 @@ const listarGenerosFilme = async function (idFilme) {
         if (!isNaN(idFilme) && idFilme != '' && idFilme != null && idFilme > 0) {
 
             let resultFilmesGeneros = await filmeGeneroDAO.getSelectGenresByIdMovies(Number(idFilme))
-
             if (resultFilmesGeneros) {
 
                 if (resultFilmesGeneros.length > 0) {
 
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.genero = resultFilmesGeneros
-
+                    MESSAGES.DEFAULT_HEADER.items.filme_genero = resultFilmesGeneros
+                    // console.log(MESSAGES.DEFAULT_HEADER)
                     return MESSAGES.DEFAULT_HEADER// 200
                 } else {
                     return MESSAGES.ERROR_NOT_FOUND //404
@@ -118,6 +117,7 @@ const listarGenerosFilme = async function (idFilme) {
         }
 
     } catch (error) {
+
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
@@ -142,7 +142,7 @@ const listarFilmesIdGenero = async function (idGenero) {
 
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.genero = resultFilmesGeneros
+                    MESSAGES.DEFAULT_HEADER.items.filme_genero = resultFilmesGeneros
 
                     return MESSAGES.DEFAULT_HEADER// 200
                 } else {
@@ -184,12 +184,10 @@ const inserirFilmeGenero = async function (filmeGenero, contentType) {
                 // Processamento
                 // Chama a função para inserir um novo genero no BD
                 let resultFilmesGeneros = await filmeGeneroDAO.setInsertMoivesGeres(filmeGenero)
-
                 if (resultFilmesGeneros) {
 
                     // Chama a função para recerber o ID gerado no BD
                     let lastID = await filmeGeneroDAO.getSelectLastID()
-
                     if (lastID) {
 
                         // Adiciona o ID no JSON com os dados do genero
@@ -197,7 +195,6 @@ const inserirFilmeGenero = async function (filmeGenero, contentType) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items = filmeGenero
 
                         return MESSAGES.DEFAULT_HEADER // 201
 
@@ -341,7 +338,7 @@ const validarDadosFilmeGenero = async function (filmeGenero) {
 module.exports = {
     listarFilmesGeneros,
     buscarFilmeGeneroId,
-    listarGenerosFilme,
+    listarGenerosIdFilme,
     listarFilmesIdGenero,
     inserirFilmeGenero,
     atualizarFilmeGenero,

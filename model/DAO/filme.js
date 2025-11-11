@@ -136,6 +136,7 @@ const setInsertMovies = async function (filme) {
             return false
 
     } catch (error) {
+        console.log(error)
         return false
     }
 
