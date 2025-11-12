@@ -2,7 +2,7 @@
  *  Objetivo: Arquivo responsavel pelo CRUDE de dados MySQL referente ao relacionamento entre filmes e Genero
  *  Data: 05/11/2025
  *  Autor: Gabryel Fillipe Cavalcanti da silva
- *  versão: 1.0.0
+ *  versão: 1.2
  *************************************************************************************************************/
 
 

@@ -2,7 +2,7 @@
  * Objetivo: Arquivo responsável pelo CRUD de dados no MySQL referente ao filme
  * Data: 01/10/2025
  * Autor: Gabryel Fillipe Cavalcanti da Silva
- * Versão: 1.0
+ * Versão: 1.1
  ******************************************************************************************************************/
 /**
    Exemplos de bibliotecas para conexão com o BD
@@ -50,7 +50,7 @@ const getSelectAllMovies = async function () {
 
     try {
         // Script SQL
-        let sql = `select * from tbl_filme order by id desc`
+        let sql = `select * from tbl_filme tf where status = 1  order by id desc`
 
         // Encaminha para o BD o Script SQL
         let result = await prisma.$queryRawUnsafe(sql)
@@ -176,7 +176,9 @@ const setDeleteMovies = async function (id) {
 
     try {
 
-        let sql = `delete from tbl_filme where id = ${id}`
+        let sql = `update  tbl_filme
+                set status = 0
+                where id = ${id};`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
