@@ -81,6 +81,47 @@ const buscarFilmeGeneroId = async function (id) {
 
 }
 
+const buscarFilmeGeneroIdFilmeId = async function (filmeId) {
+
+    // Criando um objeto novo para que um não interfira no outro
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
+
+    try {
+
+        // Validação da chegada do ID
+        if (!isNaN(filmeId) && filmeId != '' && filmeId != null && filmeId > 0) {
+
+            let resultFilmesGeneros = await filmeGeneroDAO.getSelectFilmeGenresIdByFilmeId(Number(filmeId))
+
+            if (resultFilmesGeneros) {
+
+                if (resultFilmesGeneros.length > 0) {
+
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.items.genero = resultFilmesGeneros
+
+                    return MESSAGES.DEFAULT_HEADER// 200
+                } else {
+                    return MESSAGES.ERROR_NOT_FOUND //404
+                }
+
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+
+
+        } else {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[ID incorreto]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 400 referente a validação do ID
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+}
+
 // Retorna um genero filtrando pelo id do filme
 const listarGenerosIdFilme = async function (idFilme) {
 
@@ -100,7 +141,6 @@ const listarGenerosIdFilme = async function (idFilme) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filme_genero = resultFilmesGeneros
-                    // console.log(MESSAGES.DEFAULT_HEADER)
                     return MESSAGES.DEFAULT_HEADER// 200
                 } else {
                     return MESSAGES.ERROR_NOT_FOUND //404
@@ -164,6 +204,8 @@ const listarFilmesIdGenero = async function (idGenero) {
     }
 
 }
+
+
 
 // Insere um genero
 const inserirFilmeGenero = async function (filmeGenero, contentType) {
@@ -235,13 +277,15 @@ const atualizarFilmeGenero = async function (filmeGenero, id, contentType) {
             if (!validar) {
 
                 // Validação de ID válido, chama a função da controller que verifica no BD se o ID existe
-                let validarID = await buscarFilmeGeneroId(id)
+                let validarID = await buscarFilmeGeneroIdFilmeId(id)
 
                 if (validarID.status_code == 200) {
 
                     // Adiciona o ID do genero no JSON de dados para ser encaminhados ao DAO
                     filmeGenero.id = Number(id)
 
+
+                    let resultDeleteGeneros = await filmeGeneroDAO.setDeleteGenresByMovieId(filmeGenero.id)
                     // Processamento
                     // Chama a função para atualizar um genero no BD
                     let resultFilmesGeneros = await filmeGeneroDAO.setUpdateMoviesGenres(filmeGenero)
@@ -312,6 +356,34 @@ const excluirFilmeGenero = async function (id) {
 
 }
 
+// Exclui os genero de um filme buscando pelo id
+const excluirGenerosFilme = async function (id) {
+    // Criando um objeto novo para que um nõo interfira no outro
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAUL_MESSAGES))
+    try {
+
+        // Processamento
+        // Chama a função para excluir um genero no BD
+        let resultFilmesGeneros = await filmeGeneroDAO.setDeleteGenresByMovieId(id)
+        if (resultFilmesGeneros) {
+
+            MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_DELETED_ITEM.status
+            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_DELETED_ITEM.status_code
+            MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_DELETED_ITEM.message
+            delete MESSAGES.DEFAULT_HEADER.items
+
+            return MESSAGES.DEFAULT_HEADER // 200
+        } else {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+        }
+
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+
+}
+
 // Validação dos dados de cadastro e atualização do genero
 const validarDadosFilmeGenero = async function (filmeGenero) {
 
@@ -342,5 +414,6 @@ module.exports = {
     listarFilmesIdGenero,
     inserirFilmeGenero,
     atualizarFilmeGenero,
-    excluirFilmeGenero
+    excluirFilmeGenero,
+    excluirGenerosFilme
 }

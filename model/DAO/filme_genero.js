@@ -129,6 +129,24 @@ const getSelectLastID = async function () {
 
 }
 
+const getSelectFilmeGenresIdByFilmeId = async function (filmeId) {
+    try {
+
+        let sql = `select filme_genero_id from tbl_filme_genero where filme_id = ${filmeId};`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if (Array.isArray(result)) {
+            return result
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
 // Insere um genero novo no banco de dados
 const setInsertMoivesGeres = async function (filmeGenero) {
 
@@ -143,8 +161,7 @@ const setInsertMoivesGeres = async function (filmeGenero) {
         else
             return false
 
-    } catch (error)
-    {
+    } catch (error) {
         return false
     }
 
@@ -162,18 +179,36 @@ const setUpdateMoviesGenres = async function (filmeGenero) {
 
         // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores
         let result = await prisma.$executeRawUnsafe(sql)
-        
         if (result)
             return true
         else
             return false
 
     } catch (error) {
-       return false
+        return false
     }
 
 }
 
+const setUpdadeGenresMovie = async function (filmeId) {
+
+    try {
+        let sql = `update tbl_filme_genero 
+                set genero_id = 11
+                where filme_id = ${filmeId};`
+
+        // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+
+    } catch (error) {
+        return false
+
+    }
+}
 // Exclui um genero pelo ID no banco de dados
 const setDeleteMoviesGenres = async function (id) {
 
@@ -194,13 +229,36 @@ const setDeleteMoviesGenres = async function (id) {
 
 }
 
+// Exclui os generos de um filme  pelo ID do filme no banco de dados
+const setDeleteGenresByMovieId = async function (id) {
+
+    try {
+
+        let sql = `delete from tbl_filme_genero where filme_id = ${id}`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if (result)
+            return true
+        else
+            return false
+
+    } catch (error) {
+        return false
+    }
+
+}
+
 module.exports = {
     getSelectAllMoviesGenres,
     getSelectByIdMoviesGenres,
     getSelectGenresByIdMovies,
     getSelectMoviesByIdGenre,
     getSelectLastID,
+    getSelectFilmeGenresIdByFilmeId,
     setInsertMoivesGeres,
     setUpdateMoviesGenres,
-    setDeleteMoviesGenres
+    setUpdadeGenresMovie,
+    setDeleteMoviesGenres,
+    setDeleteGenresByMovieId
 }
