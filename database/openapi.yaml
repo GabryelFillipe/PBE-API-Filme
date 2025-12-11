@@ -20,7 +20,7 @@ paths:
       tags:
         - Filme
       summary: Adiciona um novo Filme
-      description: Adiciona um novo Filme ao banco de dados
+      description: Adiciona um novo Filme ao banco de dados com seus relacionamentos (Atores, Diretores e Gêneros).
       requestBody:
         description: JSON contendo os dados do novo filme
         content:
@@ -756,6 +756,7 @@ components:
         - orcamento
         - capa
         - trailer
+        - classificacao_id
       type: object
       properties:
         id:
@@ -784,6 +785,54 @@ components:
         capa:
           type: string
           example: 'https://url_da_imagem_da_capa.jpg'
+        classificacao_id:
+          type: integer
+          example: 1
+        genero:
+          type: array
+          items:
+            type: object
+            properties:
+              genero_id:
+                type: integer
+                example: 1
+              nome:
+                type: string
+                example: 'Aventura'
+        atores:
+          type: array
+          items:
+            type: object
+            properties:
+              ator_id:
+                type: integer
+                example: 1
+              nome_personagem:
+                type: string
+                example: 'Soluço'
+              ordem_importancia:
+                type: string
+                example: 'Protagonista'
+              nome:
+                type: string
+                example: 'Mason Thames'
+              foto_url:
+                type: string
+                example: 'https://url_da_foto.jpg'
+        diretores:
+          type: array
+          items:
+            type: object
+            properties:
+              diretor_id:
+                type: integer
+                example: 1
+              nome:
+                type: string
+                example: 'Dean DeBlois'
+              foto_url:
+                type: string
+                example: 'https://url_da_foto.jpg'
     Ator:
       required:
         - nome

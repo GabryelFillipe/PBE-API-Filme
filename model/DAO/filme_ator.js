@@ -13,7 +13,7 @@ const setInsertFilmeAtor = async function (dados) {
     try {
         let ordemImportancia = dados.ordem_importancia ? `'${dados.ordem_importancia}'` : null;
         
-        let sql = `INSERT into elenco (
+        let sql = `INSERT into tbl_elenco (
                         filme_id, 
                         ator_id, 
                         nome_personagem, 
@@ -37,7 +37,7 @@ const setInsertFilmeAtor = async function (dados) {
 // Deleta todos os atores de um filme específico (Usado antes do Update)
 const setDeleteAtorByFilmeId = async function (filmeId) {
     try {
-        let sql = `delete from elenco where filme_id = ${filmeId}`
+        let sql = `delete from tbl_elenco where filme_id = ${filmeId}`
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) return true
         else return false
@@ -51,7 +51,7 @@ const getSelectAtoresByFilmeId = async function (filmeId) {
     try {
         let sql = `select a.ator_id, a.nome, a.foto_url, e.nome_personagem, e.ordem_importancia
                    from tbl_ator as a
-                   inner join elenco as e on a.ator_id = e.ator_id
+                   inner join tbl_elenco as e on a.ator_id = e.ator_id
                    where e.filme_id = ${filmeId}`
         
         let result = await prisma.$queryRawUnsafe(sql)

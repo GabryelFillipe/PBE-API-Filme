@@ -34,7 +34,7 @@ const setDeleteDiretorByFilmeId = async function (filmeId) {
 
 const getSelectDiretoresByFilmeId = async function (filmeId) {
     try {
-        let sql = `select d.diretor_id, d.nome, d.foto_url
+        let sql = `select d.diretor_id, d.nome, d.foto as foto_url
                    from tbl_diretor as d
                    inner join tbl_filme_direcao as fd on d.diretor_id = fd.diretor_id
                    where fd.filme_id = ${filmeId}`
