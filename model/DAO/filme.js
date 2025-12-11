@@ -61,6 +61,7 @@ const getSelectAllMovies = async function () {
             return false
 
     } catch (error) {
+        console.log(error)
         return false
     }
 }
@@ -117,7 +118,8 @@ const setInsertMovies = async function (filme) {
                         duracao,
                         orcamento,
                         trailer, 
-                        capa) 
+                        capa,
+                        classificacao_id) 
                     VALUES(
                             '${filme.nome}',
                             '${filme.sinopse}',
@@ -125,7 +127,8 @@ const setInsertMovies = async function (filme) {
                             '${filme.duracao}',
                             '${filme.orcamento}',
                             '${filme.trailer}',
-                            '${filme.capa}')`
+                            '${filme.capa}',
+                            ${filme.classificacao_id})`
 
         // executeRawUnsafe() -> Executa o script SQL que não tem retorno de valores
         let result = await prisma.$executeRawUnsafe(sql)
@@ -154,7 +157,8 @@ const setUpdateMovies = async function (filme) {
                     duracao         =   '${filme.duracao}',
                     orcamento       =   '${filme.orcamento}',
                     trailer         =   '${filme.trailer}', 
-                    capa            =   '${filme.capa}'
+                    capa            =   '${filme.capa}',
+                    classificacao_id =  ${filme.classificacao_id}
 
         where id        =   ${filme.id}`
 
